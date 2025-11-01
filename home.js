@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const cartButton = document.getElementById("cartButton");
   if (cartButton) {
     cartButton.addEventListener("click", () => {
-      window.location.href = "../Cart/cart.html";
+      window.location.href = "Clothes_Sites/Cart/cart.html";
     });
   }
 
@@ -175,3 +175,4 @@ document.addEventListener("DOMContentLoaded", () => {
     totalPriceSpan.textContent = totalPrice.toFixed(2);
   }
 });
+
