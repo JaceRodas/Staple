@@ -307,48 +307,68 @@ main .info {
 /* ---------- TABLET (portrait and small landscape) ---------- */
 @media (max-width: 1024px) {
   /* keep navbar layout but reduce padding */
-  header .navbar {
+  .navbar {
     padding: 10px 20px;
   }
-  header .navbar.at-top {
+  .navbar.at-top {
     padding: 18px 20px;
   }
-  header .navbar:not(.at-top) {
+  .navbar:not(.at-top) {
     padding: 6px 20px;
   }
 
   /* reduce logo size slightly */
-  header .navbar .logo {
+  .logo {
     height: 100px;
   }
-  header .navbar:not(.at-top) .logo {
+  .navbar:not(.at-top) .logo {
     height: 40px;
+  }
+
+  /* main content: stack vertically on tablet */
+  main {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 100px 40px 40px 40px;
+  }
+
+  main img {
+    justify-self: center;
+    width: 60%;
+    margin: 0;
+  }
+
+  main .info {
+    justify-self: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 0;
   }
 }
 
 /* ---------- PHONE (portrait) ---------- */
 @media (max-width: 768px) {
   /* hide the logo on phone */
-  header .navbar .logo,
-  header .navbar .logo-link {
+  .logo,
+  .logo-link {
     display: none !important;
   }
 
   /* navbar: space-between so nav links stay left, cart stays right */
-  header .navbar {
+  .navbar {
     justify-content: space-between;
     padding: 10px 16px;
     position: relative;
   }
-  header .navbar.at-top {
+  .navbar.at-top {
     padding: 16px 16px;
   }
-  header .navbar:not(.at-top) {
+  .navbar:not(.at-top) {
     padding: 8px 16px;
   }
 
   /* keep nav ul on the left */
-  header .navbar ul {
+  .navbar ul {
     margin: 0;
     padding: 0;
     justify-content: flex-start;
@@ -356,11 +376,11 @@ main .info {
   }
 
   /* nav text: reduce font size for phone */
-  header .navbar a {
+  .navbar a {
     font-size: 15px;
     padding: 8px 10px;
   }
-  header .navbar.at-top a {
+  .navbar.at-top a {
     font-size: 16px;
   }
 
@@ -408,15 +428,74 @@ main .info {
     width: 100%;
     height: auto;
   }
+
+  /* main content: stack image above, info below */
+  main {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 80px 20px 40px 20px;
+  }
+
+  main img {
+    justify-self: center;
+    width: 70%;
+    max-width: 300px;
+    margin: 0;
+  }
+
+  main .info {
+    justify-self: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 0;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  main h1 {
+    font-size: 1.5rem;
+  }
+
+  main p {
+    font-size: 1rem;
+  }
+
+  /* quantity and button: center them */
+  .quantity-container {
+    justify-content: center;
+  }
+
+  .add-to-cart {
+    width: 100%;
+    max-width: 250px;
+  }
 }
 
 /* ---------- VERY SMALL PHONES ---------- */
 @media (max-width: 480px) {
-  header .navbar a {
+  .navbar a {
     font-size: 13px;
     padding: 6px 8px;
   }
-  header .navbar.at-top a {
+  .navbar.at-top a {
     font-size: 14px;
+  }
+
+  main img {
+    width: 80%;
+    max-width: 250px;
+  }
+
+  main h1 {
+    font-size: 1.3rem;
+  }
+
+  main p {
+    font-size: 0.95rem;
+  }
+
+  .add-to-cart {
+    padding: 10px 20px;
+    font-size: 0.9rem;
   }
 }
