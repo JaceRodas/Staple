@@ -116,8 +116,37 @@ body::-webkit-scrollbar-thumb {
 }
 
 @media (max-width: 520px) {
-  .logo {
-    height: 120px;
+  /* hide logo completely on phones so nav text + cart fit */
+  .logo,
+  .logo-link {
+    display: none !important;
+    visibility: hidden;
+  }
+
+  /* tighten navbar spacing for small screens */
+  .navbar {
+    padding: 8px 10px;
+    justify-content: space-between;
+  }
+
+  /* make sure nav list stays in one row and texts fit */
+  .navbar ul {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 0;
+  }
+
+  /* keep cart aligned and visible */
+  .cart-container {
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* adjust product grid padding for narrow view */
+  .gallery {
+    padding: 0 8px;
   }
 }
 
@@ -373,35 +402,36 @@ body::-webkit-scrollbar-thumb {
 
 /* Phone / small devices */
 @media (max-width: 520px) {
-  .navbar { padding: 8px 14px; }
-  .navbar.at-top { padding: 12px 14px; }
-  .navbar a { font-size: 14px; padding: 8px 10px; }
+  /* hide logo completely on phones so nav text + cart fit */
+  .logo,
+  .logo-link {
+    display: none !important;
+    visibility: hidden;
+  }
 
-  .logo { height: 100px; } /* compact logo on phones */
+  /* tighten navbar spacing for small screens */
+  .navbar {
+    padding: 8px 10px;
+    justify-content: space-between;
+  }
+
+  /* make sure nav list stays in one row and texts fit */
+  .navbar ul {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 0;
+  }
+
+  /* keep cart aligned and visible */
   .cart-container {
-    right: 12px;
-    top: 12px;
-    transform: none;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
+  /* adjust product grid padding for narrow view */
   .gallery {
-    grid-template-columns: 1fr; /* single column on phones */
-    grid-auto-rows: 360px;     /* taller cells to keep image area comfortable */
-    gap: 12px;
-    padding: 0 12px;
+    padding: 0 8px;
   }
-  .gallery .gallery-cell > .gallery-item { height: calc(100% - 56px); }
-
-  /* keep images centered and scaled for small screens */
-  .gallery-item img.s { width: 80%; height: auto; object-fit: contain; }
-  .gallery-item img.m {
-    width: 72%;
-    transform: translate(-50%, -50%) scale(0.98);
-  }
-
-  .product-title { font-size: 16px; }
-  .price { font-size: 16px; }
-
-  .modal { padding: 12px; border-radius: 12px; }
-  .modal img { width: 120px; }
 }
