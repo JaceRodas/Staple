@@ -109,47 +109,6 @@ body::-webkit-scrollbar-thumb {
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
 }
 
-@media (max-width: 1000px) {
-  .logo {
-    height: 200px;
-  }
-}
-
-@media (max-width: 520px) {
-  /* hide logo completely on phones so nav text + cart fit */
-  .logo,
-  .logo-link {
-    display: none !important;
-    visibility: hidden;
-  }
-
-  /* tighten navbar spacing for small screens */
-  .navbar {
-    padding: 8px 10px;
-    justify-content: space-between;
-  }
-
-  /* make sure nav list stays in one row and texts fit */
-  .navbar ul {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    margin: 0;
-  }
-
-  /* keep cart aligned and visible */
-  .cart-container {
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  /* adjust product grid padding for narrow view */
-  .gallery {
-    padding: 0 8px;
-  }
-}
-
 /* ---------------- CART ICON ---------------- */
 .cart-container {
   position: absolute;
@@ -360,78 +319,110 @@ body::-webkit-scrollbar-thumb {
   pointer-events: none;
 }
 
-/* ---------------- RESPONSIVE ---------------- */
-@media (max-width: 1000px) {
+/* ==================== TABLET & PHONE RESPONSIVE ==================== */
+
+/* ---------- TABLET (portrait and small landscape) ---------- */
+@media (max-width: 1024px) {
+  /* keep navbar layout but reduce padding */
+  .navbar {
+    padding: 10px 20px;
+  }
+  .navbar.at-top {
+    padding: 18px 20px;
+  }
+  .navbar:not(.at-top) {
+    padding: 6px 20px;
+  }
+
+  /* reduce logo size slightly */
+  .logo {
+    height: 100px;
+  }
+  .navbar:not(.at-top) .logo {
+    height: 40px;
+  }
+
+  /* gallery: keep 4 columns but reduce row height */
   .gallery {
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 300px;
-  }
-
-  .price {
-    font-size: 15px;
-  }
-
-  .modal img {
-    width: 150px;
-  }
-}
-
-/* Tablet (between phone and desktop) */
-@media (min-width: 521px) and (max-width: 1000px) {
-  .navbar { padding: 12px 28px; }
-  .navbar.at-top { padding: 18px 28px; }
-  .navbar:not(.at-top) { padding: 8px 28px; }
-
-  .navbar a { font-size: 16px; }
-  .logo { height: 180px; } /* reduce from large desktop size */
-  .cart-container { right: 60px; }
-
-  .gallery {
-    grid-template-columns: repeat(3, 1fr); /* 3 columns on tablets */
-    grid-auto-rows: 280px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 240px;
     gap: 14px;
   }
-  .gallery .gallery-cell > .gallery-item { height: calc(100% - 52px); }
-
-  .gallery-item img.m { width: 64%; } /* hover image slightly smaller */
-  .gallery-item img.s { width: 78%; }
-
-  .product-title { font-size: 18px; }
-  .price { font-size: 18px; }
 }
 
-/* Phone / small devices */
-@media (max-width: 520px) {
-  /* hide logo completely on phones so nav text + cart fit */
+/* ---------- PHONE (portrait) ---------- */
+@media (max-width: 768px) {
+  /* hide the logo on phone so nav links spread evenly */
   .logo,
   .logo-link {
     display: none !important;
-    visibility: hidden;
   }
 
-  /* tighten navbar spacing for small screens */
+  /* navbar: keep flex layout, center nav links */
   .navbar {
+    justify-content: center;
+    padding: 10px 16px;
+  }
+  .navbar.at-top {
+    padding: 16px 16px;
+  }
+  .navbar:not(.at-top) {
+    padding: 8px 16px;
+  }
+
+  /* nav text: reduce font size for phone */
+  .navbar a {
+    font-size: 15px;
     padding: 8px 10px;
-    justify-content: space-between;
+  }
+  .navbar.at-top a {
+    font-size: 16px;
   }
 
-  /* make sure nav list stays in one row and texts fit */
-  .navbar ul {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    margin: 0;
-  }
-
-  /* keep cart aligned and visible */
-  .cart-container {
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  /* adjust product grid padding for narrow view */
+  /* gallery: 2 columns (2 pictures per row) */
   .gallery {
-    padding: 0 8px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 280px; /* adjust height as needed */
+    gap: 12px;
+    padding: 0 12px;
+  }
+
+  /* adjust cell reserved space for title+price if needed */
+  .gallery .gallery-cell > .gallery-item {
+    height: calc(100% - 52px);
+  }
+
+  /* modal container: stack modals vertically or smaller */
+  .modal-container {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+  }
+  .modal {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* ---------- VERY SMALL PHONES ---------- */
+@media (max-width: 480px) {
+  .navbar a {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+  .navbar.at-top a {
+    font-size: 14px;
+  }
+
+  .gallery {
+    grid-auto-rows: 240px;
+    gap: 10px;
+  }
+
+  .product-title {
+    font-size: 14px;
+  }
+  .price {
+    font-size: 14px;
   }
 }
