@@ -388,10 +388,10 @@ body::-webkit-scrollbar-thumb {
     font-size: 16px;
   }
 
-  /* cart positioned at right with safe margin from edge */
+  /* cart positioned at right with more left margin */
   .cart-container {
     position: absolute;
-    right: 24px; /* moved left from 16px to prevent clipping */
+    right: 32px; /* moved more to the left from 24px */
     top: 50%;
     transform: translateY(-50%);
     margin: 0;
@@ -407,21 +407,24 @@ body::-webkit-scrollbar-thumb {
     font-size: 11px;
   }
 
-  /* modal container: horizontal, smaller modals, no X button */
+  /* modal container: centered, no horizontal scroll */
   .modal-container {
-    flex-direction: row; /* keep horizontal */
+    flex-direction: row;
     gap: 8px;
-    padding: 16px; /* removed extra top padding for X button */
-    max-width: 90vw;
-    overflow-x: auto; /* allow scroll if needed */
+    padding: 16px;
+    max-width: none; /* remove max-width constraint */
+    width: auto;
+    overflow-x: visible; /* no horizontal scroll */
+    overflow-y: visible;
     justify-content: center;
+    align-items: center;
   }
 
   /* smaller modals for phone */
   .modal {
-    width: 90px; /* reduced from 120px */
+    width: 90px;
     max-width: 90px;
-    padding: 8px; /* reduced padding */
+    padding: 8px;
     flex-shrink: 0;
   }
 
