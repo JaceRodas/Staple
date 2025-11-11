@@ -207,3 +207,113 @@ body::-webkit-scrollbar {
 .modal:hover img {
   transform: scale(1.05);
 }
+
+/* ==================== TABLET & PHONE RESPONSIVE ==================== */
+
+/* ---------- TABLET (portrait and small landscape) ---------- */
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 10px 20px;
+  }
+  .navbar.at-top {
+    padding: 18px 20px;
+  }
+  .navbar:not(.at-top) {
+    padding: 6px 20px;
+  }
+
+  .logo {
+    height: 100px;
+  }
+  .navbar:not(.at-top) .logo {
+    height: 40px;
+  }
+}
+
+/* ---------- PHONE (portrait) ---------- */
+@media (max-width: 768px) {
+  .logo,
+  .logo-link {
+    display: none !important;
+  }
+
+  .navbar {
+    justify-content: space-between;
+    padding: 10px 16px;
+    position: relative;
+  }
+  .navbar.at-top {
+    padding: 16px 16px;
+  }
+  .navbar:not(.at-top) {
+    padding: 8px 16px;
+  }
+
+  .navbar ul {
+    margin: 0;
+    padding: 0;
+    justify-content: flex-start;
+    flex: 0 0 auto;
+  }
+
+  .navbar a {
+    font-size: 15px;
+    padding: 8px 10px;
+  }
+  .navbar.at-top a {
+    font-size: 16px;
+  }
+
+  .cart-container {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+  }
+
+  .cartlogo {
+    height: 28px;
+  }
+
+  .cart-badge {
+    width: 16px;
+    height: 16px;
+    font-size: 11px;
+  }
+
+  .modal-container {
+    flex-direction: row;
+    gap: 8px;
+    padding: 16px;
+    max-width: none;
+    width: auto;
+    overflow-x: visible;
+    overflow-y: visible;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal {
+    width: 90px;
+    max-width: 90px;
+    padding: 8px;
+    flex-shrink: 0;
+  }
+
+  .modal img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* ---------- VERY SMALL PHONES ---------- */
+@media (max-width: 480px) {
+  .navbar a {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+  .navbar.at-top a {
+    font-size: 14px;
+  }
+}

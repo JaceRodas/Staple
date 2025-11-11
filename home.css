@@ -391,7 +391,7 @@ body::-webkit-scrollbar-thumb {
   /* cart positioned at right with more left margin */
   .cart-container {
     position: absolute;
-    right: 32px; /* moved more to the left from 24px */
+    right: 40px; /* moved more to the left from 32px */
     top: 50%;
     transform: translateY(-50%);
     margin: 0;
