@@ -388,10 +388,10 @@ body::-webkit-scrollbar-thumb {
     font-size: 16px;
   }
 
-  /* cart positioned at far right edge of navbar */
+  /* cart positioned at right with safe margin from edge */
   .cart-container {
     position: absolute;
-    right: 16px;
+    right: 24px; /* moved left from 16px to prevent clipping */
     top: 50%;
     transform: translateY(-50%);
     margin: 0;
@@ -407,41 +407,21 @@ body::-webkit-scrollbar-thumb {
     font-size: 11px;
   }
 
-  /* modal container: horizontal with X button on top right */
+  /* modal container: horizontal, smaller modals, no X button */
   .modal-container {
     flex-direction: row; /* keep horizontal */
-    gap: 10px;
-    padding: 40px 16px 16px 16px; /* space for X button */
+    gap: 8px;
+    padding: 16px; /* removed extra top padding for X button */
     max-width: 90vw;
     overflow-x: auto; /* allow scroll if needed */
     justify-content: center;
   }
 
-  /* X close button for phone modal */
-  .modal-container::before {
-    content: '✕';
-    position: absolute;
-    top: 10px;
-    right: 16px;
-    font-size: 28px;
-    color: #fff;
-    background: rgba(0,0,0,0.6);
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    z-index: 1001;
-    pointer-events: all;
-  }
-
+  /* smaller modals for phone */
   .modal {
-    width: 120px; /* smaller modals */
-    max-width: 120px;
-    padding: 12px;
+    width: 90px; /* reduced from 120px */
+    max-width: 90px;
+    padding: 8px; /* reduced padding */
     flex-shrink: 0;
   }
 

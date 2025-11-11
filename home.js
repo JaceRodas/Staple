@@ -16,31 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
       modalContainer.classList.toggle("show");
     });
 
-    // Close modal when clicking outside (desktop) or on X button (phone)
+    // Close modal when clicking outside
     document.addEventListener("click", (e) => {
-      if (modalContainer.classList.contains("show")) {
-        // Check if clicked on the X button (::before pseudo-element area)
-        const rect = modalContainer.getBoundingClientRect();
-        const clickX = e.clientX;
-        const clickY = e.clientY;
-        
-        // X button area (top-right corner, adjust based on CSS)
-        const xButtonArea = {
-          left: rect.right - 52, // 36px button + 16px right padding
-          right: rect.right - 16,
-          top: rect.top + 10,
-          bottom: rect.top + 46
-        };
-        
-        const clickedXButton = window.innerWidth <= 768 && 
-          clickX >= xButtonArea.left && clickX <= xButtonArea.right &&
-          clickY >= xButtonArea.top && clickY <= xButtonArea.bottom;
-
-        // Close if clicked X or outside modal (but not on shop link)
-        if (clickedXButton || 
-            (!modalContainer.contains(e.target) && e.target.id !== "shopmodal")) {
-          modalContainer.classList.remove("show");
-        }
+      if (modalContainer.classList.contains("show") &&
+          !modalContainer.contains(e.target) &&
+          e.target.id !== "shopmodal") {
+        modalContainer.classList.remove("show");
       }
     });
   }
