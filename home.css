@@ -358,9 +358,9 @@ body::-webkit-scrollbar-thumb {
     display: none !important;
   }
 
-  /* navbar: keep flex layout, center nav links */
+  /* navbar: space-between so nav links stay left, cart stays right */
   .navbar {
-    justify-content: center;
+    justify-content: space-between;
     padding: 10px 16px;
   }
   .navbar.at-top {
@@ -370,6 +370,13 @@ body::-webkit-scrollbar-thumb {
     padding: 8px 16px;
   }
 
+  /* keep nav ul on the left */
+  .navbar ul {
+    margin: 0;
+    padding: 0;
+    justify-content: flex-start;
+  }
+
   /* nav text: reduce font size for phone */
   .navbar a {
     font-size: 15px;
@@ -377,6 +384,11 @@ body::-webkit-scrollbar-thumb {
   }
   .navbar.at-top a {
     font-size: 16px;
+  }
+
+  /* cart stays on the right */
+  .cart-container {
+    margin-left: auto;
   }
 
   /* gallery: 2 columns (2 pictures per row) */
