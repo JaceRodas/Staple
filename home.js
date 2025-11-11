@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Prevent dragging of gallery images
   document.querySelectorAll(".gallery img").forEach(img => {
-    img.setAttribute("draggable", "false");
-    img.addEventListener("dragstart", e => e.preventDefault());
+    img.setAttribute('draggable', 'false');
+    img.addEventListener('dragstart', e => e.preventDefault());
   });
 
   // Shop By click → show or hide modal container
@@ -16,14 +16,31 @@ document.addEventListener("DOMContentLoaded", () => {
       modalContainer.classList.toggle("show");
     });
 
-    // Close modals if clicked outside
+    // Close modal when clicking outside (desktop) or on X button (phone)
     document.addEventListener("click", (e) => {
-      if (
-        modalContainer.classList.contains("show") &&
-        !modalContainer.contains(e.target) &&
-        e.target.id !== "shopmodal"
-      ) {
-        modalContainer.classList.remove("show");
+      if (modalContainer.classList.contains("show")) {
+        // Check if clicked on the X button (::before pseudo-element area)
+        const rect = modalContainer.getBoundingClientRect();
+        const clickX = e.clientX;
+        const clickY = e.clientY;
+        
+        // X button area (top-right corner, adjust based on CSS)
+        const xButtonArea = {
+          left: rect.right - 52, // 36px button + 16px right padding
+          right: rect.right - 16,
+          top: rect.top + 10,
+          bottom: rect.top + 46
+        };
+        
+        const clickedXButton = window.innerWidth <= 768 && 
+          clickX >= xButtonArea.left && clickX <= xButtonArea.right &&
+          clickY >= xButtonArea.top && clickY <= xButtonArea.bottom;
+
+        // Close if clicked X or outside modal (but not on shop link)
+        if (clickedXButton || 
+            (!modalContainer.contains(e.target) && e.target.id !== "shopmodal")) {
+          modalContainer.classList.remove("show");
+        }
       }
     });
   }
@@ -34,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let ticking = false;
     const checkAtTop = () => {
       const atTop = window.scrollY <= 5;
-      navbar.classList.toggle("at-top", atTop);
+      navbar.classList.toggle('at-top', atTop);
       ticking = false;
     };
     const onScroll = () => {
@@ -43,37 +60,33 @@ document.addEventListener("DOMContentLoaded", () => {
         ticking = true;
       }
     };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
     onScroll();
   }
 
   // ----------------- LOGO CLICK LOGIC -----------------
   const logoLink = document.querySelector(".logo-link");
   if (logoLink) {
-    logoLink.addEventListener("click", (e) => {
-      const path = window.location.pathname.split("/").pop() || "index.html";
-      const onIndex = path === "index.html" || path === "" || path === "/";
-      if (onIndex) {
+    logoLink.addEventListener('click', (e) => {
+      const currentPage = window.location.pathname.split('/').pop();
+      if (currentPage === 'index.html' || currentPage === '') {
         e.preventDefault();
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.location.reload();
       }
     });
   }
 
   // ----------------- REFRESH ON SAME PAGE LINK CLICK -----------------
   document.querySelectorAll(".navbar a").forEach(link => {
-    link.addEventListener("click", (e) => {
-      const href = link.getAttribute("href") || "";
-      if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) return;
-      try {
-        const target = new URL(href, window.location.href);
-        if (target.origin === window.location.origin && target.pathname === window.location.pathname) {
-          e.preventDefault();
-          window.location.reload();
-        }
-      } catch (err) {}
-    });
+    const currentPage = window.location.pathname.split('/').pop();
+    const linkPage = link.getAttribute('href');
+    if (linkPage && linkPage.split('/').pop() === currentPage) {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.reload();
+      });
+    }
   });
 
   // ----------------- CART BUTTON LOGIC -----------------
@@ -175,4 +188,3 @@ document.addEventListener("DOMContentLoaded", () => {
     totalPriceSpan.textContent = totalPrice.toFixed(2);
   }
 });
-

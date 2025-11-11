@@ -362,6 +362,7 @@ body::-webkit-scrollbar-thumb {
   .navbar {
     justify-content: space-between;
     padding: 10px 16px;
+    position: relative; /* for absolute cart positioning */
   }
   .navbar.at-top {
     padding: 16px 16px;
@@ -375,6 +376,7 @@ body::-webkit-scrollbar-thumb {
     margin: 0;
     padding: 0;
     justify-content: flex-start;
+    flex: 0 0 auto;
   }
 
   /* nav text: reduce font size for phone */
@@ -386,15 +388,72 @@ body::-webkit-scrollbar-thumb {
     font-size: 16px;
   }
 
-  /* cart stays on the right */
+  /* cart positioned at far right edge of navbar */
   .cart-container {
-    margin-left: auto;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+  }
+
+  .cartlogo {
+    height: 28px;
+  }
+
+  .cart-badge {
+    width: 16px;
+    height: 16px;
+    font-size: 11px;
+  }
+
+  /* modal container: horizontal with X button on top right */
+  .modal-container {
+    flex-direction: row; /* keep horizontal */
+    gap: 10px;
+    padding: 40px 16px 16px 16px; /* space for X button */
+    max-width: 90vw;
+    overflow-x: auto; /* allow scroll if needed */
+    justify-content: center;
+  }
+
+  /* X close button for phone modal */
+  .modal-container::before {
+    content: '✕';
+    position: absolute;
+    top: 10px;
+    right: 16px;
+    font-size: 28px;
+    color: #fff;
+    background: rgba(0,0,0,0.6);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    z-index: 1001;
+    pointer-events: all;
+  }
+
+  .modal {
+    width: 120px; /* smaller modals */
+    max-width: 120px;
+    padding: 12px;
+    flex-shrink: 0;
+  }
+
+  .modal img {
+    width: 100%;
+    height: auto;
   }
 
   /* gallery: 2 columns (2 pictures per row) */
   .gallery {
     grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 280px; /* adjust height as needed */
+    grid-auto-rows: 280px;
     gap: 12px;
     padding: 0 12px;
   }
@@ -402,17 +461,6 @@ body::-webkit-scrollbar-thumb {
   /* adjust cell reserved space for title+price if needed */
   .gallery .gallery-cell > .gallery-item {
     height: calc(100% - 52px);
-  }
-
-  /* modal container: stack modals vertically or smaller */
-  .modal-container {
-    flex-direction: column;
-    gap: 12px;
-    padding: 16px;
-  }
-  .modal {
-    width: 100%;
-    max-width: 300px;
   }
 }
 
