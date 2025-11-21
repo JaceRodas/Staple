@@ -232,6 +232,12 @@ body::-webkit-scrollbar {
 
 /* ---------- PHONE (portrait) ---------- */
 @media (max-width: 768px) {
+  /* prevent horizontal scrolling */
+  body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
   .logo,
   .logo-link {
     display: none !important;
@@ -304,6 +310,34 @@ body::-webkit-scrollbar {
   .modal img {
     width: 100%;
     height: auto;
+  }
+
+  /* main content: centered with padding */
+  main {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 80px;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  main h1 {
+    font-size: 24px;
+    text-align: center;
+    max-width: 100%;
+    line-height: 1.5;
+  }
+
+  .contact-info {
+    max-width: 100%;
+    text-align: left;
+    padding: 0;
+  }
+
+  .contact-info p {
+    font-size: 14px;
+    line-height: 1.8;
+    word-wrap: break-word;
   }
 }
 
