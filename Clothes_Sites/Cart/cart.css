@@ -294,6 +294,12 @@ body {
     width: 100%;
     height: auto;
   }
+
+  /* Secret image responsive sizing */
+  #secretOverlay img {
+    max-width: 90% !important;
+    max-height: 70% !important;
+  }
 }
 
 /* ---------- VERY SMALL PHONES ---------- */
@@ -304,5 +310,10 @@ body {
   }
   .navbar.at-top a {
     font-size: 14px;
+  }
+
+  #secretOverlay img {
+    max-width: 95% !important;
+    max-height: 60% !important;
   }
 }
