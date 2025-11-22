@@ -221,6 +221,12 @@ body {
 
 /* ---------- PHONE (portrait) ---------- */
 @media (max-width: 768px) {
+  /* prevent horizontal scrolling */
+  body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
   .logo,
   .logo-link {
     display: none !important;
@@ -295,7 +301,64 @@ body {
     height: auto;
   }
 
-  /* Secret image responsive sizing */
+  /* Cart items layout for phone */
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+    gap: 10px;
+  }
+
+  .cart-item img {
+    width: 80px !important;
+    height: 80px !important;
+    object-fit: cover;
+    align-self: center;
+  }
+
+  .item-details {
+    width: 100%;
+    text-align: center;
+  }
+
+  .item-details h3 {
+    font-size: 16px;
+  }
+
+  .item-details p {
+    font-size: 14px;
+  }
+
+  .item-quantity {
+    align-self: center;
+  }
+
+  .item-total {
+    align-self: center;
+    font-size: 16px;
+  }
+
+  .remove-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  /* Cart summary */
+  .cart-summary {
+    padding: 20px 15px;
+  }
+
+  .cart-summary h2 {
+    font-size: 18px;
+  }
+
+  #checkoutButton {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  /* Secret image responsive */
   #secretOverlay img {
     max-width: 90% !important;
     max-height: 70% !important;
@@ -312,6 +375,20 @@ body {
     font-size: 14px;
   }
 
+  .cart-item img {
+    width: 70px !important;
+    height: 70px !important;
+  }
+
+  .item-details h3 {
+    font-size: 14px;
+  }
+
+  .item-details p {
+    font-size: 12px;
+  }
+
+  /* Secret image for very small phones */
   #secretOverlay img {
     max-width: 95% !important;
     max-height: 60% !important;
