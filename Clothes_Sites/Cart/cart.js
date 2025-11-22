@@ -46,8 +46,102 @@ document.addEventListener("DOMContentLoaded", () => {
     onScroll();
   }
 
+  // ----------------- CART FUNCTIONALITY -----------------
+  const cartItemsContainer = document.getElementById('cartItems');
+  const subtotalEl = document.getElementById('subtotal');
+  const totalEl = document.getElementById('total');
+  const checkoutButton = document.getElementById('checkoutButton');
+
+  // Get cart from localStorage
+  function getCart() {
+    return JSON.parse(localStorage.getItem('cart')) || [];
+  }
+
+  // Save cart to localStorage
+  function saveCart(cart) {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  // Update cart display
+  function updateCartDisplay() {
+    const cart = getCart();
+    cartItemsContainer.innerHTML = '';
+
+    if (cart.length === 0) {
+      cartItemsContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">Your cart is empty</p>';
+      subtotalEl.textContent = '₱0.00';
+      totalEl.textContent = '₱0.00';
+      return;
+    }
+
+    let subtotal = 0;
+
+    cart.forEach((item, index) => {
+      const itemTotal = item.price * item.quantity;
+      subtotal += itemTotal;
+
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'cart-item';
+      itemDiv.innerHTML = `
+        <img src="${item.image}" alt="${item.name}">
+        <div class="item-details">
+          <h3>${item.name}</h3>
+          <p>Size: ${item.size}</p>
+          <p class="item-price">₱${item.price.toFixed(2)}</p>
+        </div>
+        <div class="item-quantity">
+          <button class="qty-btn minus" data-index="${index}">-</button>
+          <span>${item.quantity}</span>
+          <button class="qty-btn plus" data-index="${index}">+</button>
+        </div>
+        <div class="item-total">₱${itemTotal.toFixed(2)}</div>
+        <button class="remove-btn" data-index="${index}">×</button>
+      `;
+      cartItemsContainer.appendChild(itemDiv);
+    });
+
+    subtotalEl.textContent = `₱${subtotal.toFixed(2)}`;
+    totalEl.textContent = `₱${subtotal.toFixed(2)}`;
+
+    // Update cart badge
+    updateCartBadge();
+  }
+
+  // Update cart badge count
+  function updateCartBadge() {
+    const cart = getCart();
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const badge = document.querySelector('.cart-badge');
+    if (badge) {
+      badge.textContent = totalItems;
+    }
+  }
+
+  // Handle quantity changes and removals
+  cartItemsContainer.addEventListener('click', (e) => {
+    const cart = getCart();
+    const index = parseInt(e.target.dataset.index);
+
+    if (e.target.classList.contains('minus')) {
+      if (cart[index].quantity > 1) {
+        cart[index].quantity--;
+      } else {
+        cart.splice(index, 1);
+      }
+      saveCart(cart);
+      updateCartDisplay();
+    } else if (e.target.classList.contains('plus')) {
+      cart[index].quantity++;
+      saveCart(cart);
+      updateCartDisplay();
+    } else if (e.target.classList.contains('remove-btn')) {
+      cart.splice(index, 1);
+      saveCart(cart);
+      updateCartDisplay();
+    }
+  });
+
   // ----------------- SECRET IMAGE ON 10 CLICKS -----------------
-  const checkoutButton = document.getElementById("checkoutButton");
   let clickCount = 0;
   let secretImageShown = false;
 
@@ -65,7 +159,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showSecretImage() {
-    // Create overlay container
     const overlay = document.createElement('div');
     overlay.id = 'secretOverlay';
     overlay.style.cssText = `
@@ -83,7 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
       transition: opacity 0.4s ease;
     `;
 
-    // Create secret image
     const secretImg = document.createElement('img');
     secretImg.src = '/Assets/secret.png';
     secretImg.alt = 'Secret';
@@ -99,13 +191,11 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.appendChild(secretImg);
     document.body.appendChild(overlay);
 
-    // Animate in
     setTimeout(() => {
       overlay.style.opacity = '1';
       secretImg.style.transform = 'scale(1)';
     }, 10);
 
-    // Close on click
     overlay.addEventListener('click', () => {
       overlay.style.opacity = '0';
       secretImg.style.transform = 'scale(0.8)';
@@ -115,16 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ----------------- CART FUNCTIONALITY (placeholder) -----------------
-  const totalItemsEl = document.getElementById('totalItems');
-  const totalPriceEl = document.getElementById('totalPrice');
-  
-  // Update cart display (add your cart logic here)
-  function updateCart() {
-    // Placeholder - replace with actual cart logic
-    totalItemsEl.textContent = '0';
-    totalPriceEl.textContent = '0.00';
-  }
-
-  updateCart();
+  // Initialize cart display
+  updateCartDisplay();
+  updateCartBadge();
 });
