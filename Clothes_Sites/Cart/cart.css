@@ -358,10 +358,10 @@ body {
     font-size: 14px;
   }
 
-  /* Secret image responsive */
+  /* Secret image responsive sizing */
   #secretOverlay img {
-    max-width: 90% !important;
-    max-height: 70% !important;
+    max-width: 80%;
+    max-height: 80%;
   }
 }
 
