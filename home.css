@@ -821,21 +821,21 @@ body.site-dark .site-footer {
 .mobile-menu {
   display: none;
   position: fixed;
-  top: 70px;
+  top: 72px;
   left: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   z-index: 9;
   flex-direction: column;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  max-height: calc(100vh - 70px);
+  max-height: calc(100vh - 72px);
   overflow-y: auto;
 }
 
 .mobile-menu.active {
-  display: flex;
+  display: flex !important;
 }
 
 .mobile-menu ul {
@@ -884,9 +884,10 @@ body.site-dark .site-footer {
 
   .navbar {
     padding: 8px 10px !important;
-    min-height: 64px;
+    min-height: 72px;
     align-items: center !important;
-    justify-content: center !important;
+    justify-content: space-between !important;
+    position: relative;
   }
 
   .navbar ul {
@@ -894,29 +895,27 @@ body.site-dark .site-footer {
   }
 
   .mobile-menu-btn {
-    display: block;
+    display: block !important;
     position: absolute;
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 12;
   }
 
-  .navbar li {
-    float: none;
-  }
-
-  .navbar a,
-  .navbar.at-top a {
-    font-size: 12px !important;
-    padding: 6px 7px !important;
-    line-height: 1.1;
-    white-space: nowrap;
+  .mobile-menu-btn img {
+    height: 24px;
+    width: auto;
   }
 
   .logo {
     display: block !important;
-    height: 56px !important;
-    max-width: 120px;
+    height: 48px !important;
+    max-width: 100px;
     object-fit: contain;
     position: relative !important;
     top: auto !important;
@@ -929,21 +928,28 @@ body.site-dark .site-footer {
   .question-container,
   .user-container,
   .cart-container {
+    position: absolute !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
   }
 
-  .search-container { right: 86px !important; }
-  .question-container { right: 60px !important; }
-  .user-container { right: 34px !important; }
-  .cart-container { right: 8px !important; }
+  .search-container { right: 72px !important; }
+  .question-container { right: 52px !important; }
+  .user-container { right: 32px !important; }
+  .cart-container { right: 10px !important; }
 
   .searchlogo,
   .questionlogo,
   .userlogo,
   .cartlogo {
-    height: 20px !important;
+    height: 18px !important;
     width: auto !important;
+  }
+
+  .cart-badge {
+    height: 16px !important;
+    width: 16px !important;
+    font-size: 11px !important;
   }
 
   .site-footer,
