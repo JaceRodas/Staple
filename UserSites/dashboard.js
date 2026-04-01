@@ -678,7 +678,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = modal.querySelector(".input-modal-form");
     const cancelBtn = modal.querySelector(".modal-cancel-btn");
     
-    const closeModal = () => overlay.remove();
+    const closeModal = () => {
+      overlay.classList.remove("is-open");
+      window.setTimeout(() => {
+        overlay.remove();
+      }, 220);
+    };
     
     cancelBtn.addEventListener("click", closeModal);
     overlay.addEventListener("click", (e) => {
@@ -697,6 +702,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     
     document.body.appendChild(overlay);
+    window.requestAnimationFrame(() => {
+      overlay.classList.add("is-open");
+    });
   };
 
   if (addPaymentBtn) {

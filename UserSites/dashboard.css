@@ -85,9 +85,10 @@ body {
 }
 
 .logo {
-  height: 120px;
-  position: static;
-  transform: none;
+  height: 350px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 20;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
 }
@@ -156,6 +157,16 @@ body {
   justify-content: center;
   z-index: 9999;
   padding: 20px;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 220ms ease, visibility 0ms linear 220ms;
+}
+
+.input-modal-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 220ms ease;
 }
 
 .input-modal-box {
@@ -163,8 +174,15 @@ body {
   border-radius: 8px;
   max-width: 400px;
   width: 100%;
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-  overflow: hidden;
+  transform: translateY(8px);
+  transition: transform 220ms ease;
+}
+
+.input-modal-overlay.is-open .input-modal-box {
+  transform: translateY(0);
 }
 
 .input-modal-header {
@@ -244,6 +262,40 @@ body {
 
 .modal-cancel-btn:hover {
   background: #d0d0d0;
+}
+
+body.site-dark .input-modal-box {
+  background: #181818;
+  color: #ffffff;
+}
+
+body.site-dark .input-modal-header {
+  background: #202020;
+  border-bottom-color: #353535;
+}
+
+body.site-dark .input-modal-header h3,
+body.site-dark .input-modal-field label {
+  color: #ffffff;
+}
+
+body.site-dark .modal-input {
+  background: #242424;
+  border-color: #4a4a4a;
+  color: #ffffff;
+}
+
+body.site-dark .modal-input::placeholder {
+  color: #cfcfcf;
+}
+
+body.site-dark .modal-cancel-btn {
+  background: #3a3a3a;
+  color: #ffffff;
+}
+
+body.site-dark .modal-cancel-btn:hover {
+  background: #4a4a4a;
 }
 
 .modal-container {
@@ -616,6 +668,27 @@ body.site-dark .subtle-btn {
   .logo { height: 200px; }
   .overview-grid { grid-template-columns: 1fr; }
   .dashboard-main { width: 94vw; }
+}
+
+@media (max-width: 560px) {
+  .input-modal-overlay {
+    padding: 12px;
+  }
+
+  .input-modal-box {
+    max-width: 100%;
+    max-height: calc(100dvh - 24px);
+    border-radius: 10px;
+  }
+
+  .input-modal-header,
+  .input-modal-form {
+    padding: 14px;
+  }
+
+  .input-modal-buttons {
+    flex-direction: column;
+  }
 }
 
 
