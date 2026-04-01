@@ -888,6 +888,7 @@ body.site-dark .site-footer {
     align-items: center !important;
     justify-content: space-between !important;
     position: relative;
+    display: flex;
   }
 
   .navbar ul {
@@ -905,6 +906,7 @@ body.site-dark .site-footer {
     cursor: pointer;
     padding: 8px;
     z-index: 12;
+    flex-shrink: 0;
   }
 
   .mobile-menu-btn img {
@@ -921,7 +923,9 @@ body.site-dark .site-footer {
     top: auto !important;
     left: auto !important;
     transform: none !important;
-    margin: 0 auto;
+    margin: 0 auto !important;
+    flex: 1;
+    flex-shrink: 0;
   }
 
   .search-container,
@@ -931,12 +935,16 @@ body.site-dark .site-footer {
     position: absolute !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
   }
 
-  .search-container { right: 72px !important; }
-  .question-container { right: 52px !important; }
-  .user-container { right: 32px !important; }
-  .cart-container { right: 10px !important; }
+  .search-container { right: 60px !important; }
+  .question-container { right: 42px !important; }
+  .user-container { right: 24px !important; }
+  .cart-container { right: 6px !important; }
 
   .searchlogo,
   .questionlogo,
