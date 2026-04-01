@@ -110,8 +110,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (shopModalLink) {
       shopModalLink.addEventListener("click", (e) => {
         e.preventDefault();
-        const shopmodal = document.getElementById("shopmodal");
-        if (shopmodal) shopmodal.click();
+        const modalContainer = document.getElementById("modalContainer");
+        if (modalContainer) {
+          modalContainer.classList.toggle("show");
+          mobileMenu.classList.remove("active");
+        }
       });
     }
   };
@@ -780,6 +783,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
 
 
 
