@@ -804,6 +804,10 @@ body.site-dark .site-footer {
     overflow-x: hidden;
   }
 
+  .header {
+    overflow: visible !important;
+  }
+
   .header,
   .navbar,
   main,
@@ -875,14 +879,15 @@ body.site-dark .site-footer {
 
   .logo {
     display: block !important;
-    height: 104px !important;
-    max-width: 210px;
+    height: 118px !important;
+    max-width: 240px;
     object-fit: contain;
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
-    transform: none !important;
-    margin: 0 auto;
+    position: absolute !important;
+    top: 50% !important;
+    left: 38% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0;
+    z-index: 11;
   }
 
   .search-container,
@@ -894,16 +899,16 @@ body.site-dark .site-footer {
     transform: translateY(-50%) !important;
   }
 
-  .search-container { right: 104px !important; }
-  .question-container { right: 78px !important; }
-  .user-container { right: 52px !important; }
-  .cart-container { right: 22px !important; }
+  .search-container { right: 132px !important; }
+  .question-container { right: 100px !important; }
+  .user-container { right: 68px !important; }
+  .cart-container { right: 28px !important; }
 
 
 
   .user-container .userlogo {
-    width: 22px !important;
-    height: 22px !important;
+    width: 24px !important;
+    height: 24px !important;
     border-radius: 50% !important;
     object-fit: cover !important;
   }
@@ -944,25 +949,26 @@ body.site-dark .site-footer {
   }
 
   .logo {
-    height: 88px !important;
-    max-width: 176px;
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
-    transform: none !important;
-    margin: 0 auto;
+    height: 98px !important;
+    max-width: 200px;
+    position: absolute !important;
+    top: 50% !important;
+    left: 36% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0;
+    z-index: 11;
   }
 
-  .search-container { right: 94px !important; }
-  .question-container { right: 70px !important; }
-  .user-container { right: 46px !important; }
-  .cart-container { right: 20px !important; }
+  .search-container { right: 132px !important; }
+  .question-container { right: 100px !important; }
+  .user-container { right: 68px !important; }
+  .cart-container { right: 28px !important; }
 
   .searchlogo,
   .questionlogo,
   .userlogo,
   .cartlogo {
-    height: 20px !important;
+    height: 22px!important;
   }
 
   .site-footer span,
@@ -970,6 +976,8 @@ body.site-dark .site-footer {
     font-size: 11px !important;
   }
 }
+
+
 
 
 
