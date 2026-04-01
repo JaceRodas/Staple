@@ -1,4 +1,4 @@
-﻿document.addEventListener("DOMContentLoaded", () => {  // Page transition overlay: load goes up, navigation goes down
+document.addEventListener("DOMContentLoaded", () => {  // Page transition overlay: load goes up, navigation goes down
   const websiteSettingsKey = "stapleWebsiteSettings";
   let websiteSettings;
   try {
@@ -101,17 +101,24 @@
       closeBtn.textContent = "Close";
       Object.assign(closeBtn.style, {
         position: "absolute",
-        top: "14px",
-        right: "14px",
+        top: window.innerWidth <= 768 ? "10px" : "14px",
+        right: window.innerWidth <= 768 ? "10px" : "14px",
         border: "1px solid #d0d0d0",
         background: "#f3f3f3",
         borderRadius: "8px",
-        padding: "6px 10px",
+        padding: window.innerWidth <= 768 ? "5px 9px" : "6px 10px",
         cursor: "pointer",
+        zIndex: "2",
+        fontSize: window.innerWidth <= 768 ? "13px" : "14px",
       });
 
       const content = document.createElement("div");
-      content.innerHTML = "<h2 style=\"margin:0 0 12px; font-size:34px; line-height:1.05;\">Frequently Asked Questions</h2><ol style=\"margin: 0; padding-left: 20px; display: grid; gap: 10px;\"><li><strong>How do I place an order?</strong><br>Browse products, choose what you like, add to cart, then click checkout and follow the steps.</li><li><strong>What payment methods do you accept?</strong><br>We accept cash on delivery, credit/debit cards, and e-wallets (like GCash).</li><li><strong>How long does delivery take?</strong><br>Delivery usually takes 3-7 days depending on your location.</li><li><strong>How can I track my order?</strong><br>You can track your order in your account dashboard under \"Orders.\"</li><li><strong>Can I cancel my order?</strong><br>Yes, you can cancel your order before it is shipped.</li><li><strong>Can I return or exchange items?</strong><br>Yes, you can return or exchange items within 7 days after receiving them, as long as they are not used and still in good condition.</li><li><strong>What if I receive a wrong or damaged item?</strong><br>Please contact us right away with photos, and we will help you fix the issue.</li><li><strong>Do you offer refunds?</strong><br>Yes, refunds are available for approved returns. Processing may take a few days.</li><li><strong>Do I need an account to order?</strong><br>No, but creating an account makes it easier to track your orders.</li><li><strong>How can I contact you?</strong><br>You can message us through our contact page or social media accounts.</li></ol>";
+      Object.assign(content.style, {
+        textAlign: "justify",
+        textJustify: "inter-word",
+        lineHeight: "1.45",
+      });
+      content.innerHTML = "<h2 style=\"margin:0 0 12px; font-size:clamp(22px, 5vw, 34px); line-height:1.1; padding-right:84px;\">Frequently Asked Questions</h2><ol style=\"margin: 0; padding-left: 20px; display: grid; gap: 10px; text-align: justify; text-justify: inter-word;\"><li><strong>How do I place an order?</strong><br>Browse products, choose what you like, add to cart, then click checkout and follow the steps.</li><li><strong>What payment methods do you accept?</strong><br>We accept cash on delivery, credit/debit cards, and e-wallets (like GCash).</li><li><strong>How long does delivery take?</strong><br>Delivery usually takes 3-7 days depending on your location.</li><li><strong>How can I track my order?</strong><br>You can track your order in your account dashboard under \"Orders.\"</li><li><strong>Can I cancel my order?</strong><br>Yes, you can cancel your order before it is shipped.</li><li><strong>Can I return or exchange items?</strong><br>Yes, you can return or exchange items within 7 days after receiving them, as long as they are not used and still in good condition.</li><li><strong>What if I receive a wrong or damaged item?</strong><br>Please contact us right away with photos, and we will help you fix the issue.</li><li><strong>Do you offer refunds?</strong><br>Yes, refunds are available for approved returns. Processing may take a few days.</li><li><strong>Do I need an account to order?</strong><br>No, but creating an account makes it easier to track your orders.</li><li><strong>How can I contact you?</strong><br>You can message us through our contact page or social media accounts.</li></ol>";
 
       const closeFaq = () => {
         overlay.style.opacity = "0";
@@ -248,7 +255,7 @@
     img.addEventListener("dragstart", e => e.preventDefault());
   });
 
-  // Shop By click â†’ show or hide modal container
+  // Shop By click → show or hide modal container
   if (shopByLink && modalContainer) {
     shopByLink.addEventListener("click", (e) => {
       e.preventDefault();
@@ -392,16 +399,16 @@
           <img src="${item.image}" alt="${item.name}" style="width:100px;height:auto;border-radius:10px;">
           <div class="cart-item-info" style="flex:1">
             <h3 style="margin:0 0 8px 0;">${item.name}</h3>
-            <p style="margin:0 0 8px 0;">â‚±${item.price} each</p>
+            <p style="margin:0 0 8px 0;">₱${item.price} each</p>
             <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
-              <button class="decrease-qty" data-index="${index}">âˆ’</button>
+              <button class="decrease-qty" data-index="${index}">−</button>
               <span class="item-qty">${item.quantity}</span>
               <button class="increase-qty" data-index="${index}">+</button>
               <button class="remove-item" data-index="${index}" style="margin-left:12px;">Remove</button>
             </div>
           </div>
           <div style="min-width:120px;">
-            <strong>â‚±${(item.price * item.quantity).toFixed(2)}</strong>
+            <strong>₱${(item.price * item.quantity).toFixed(2)}</strong>
           </div>
         `;
 
@@ -653,4 +660,6 @@
   }
 
 });
+
+
 
