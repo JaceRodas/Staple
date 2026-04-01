@@ -942,10 +942,10 @@ body.site-dark .site-footer {
     transform: translateY(-50%) !important;
   }
 
-  .search-container { right: 72px !important; }
-  .question-container { right: 52px !important; }
-  .user-container { right: 32px !important; }
-  .cart-container { right: 10px !important; }
+  .search-container { right: 60px !important; }
+  .question-container { right: 42px !important; }
+  .user-container { right: 24px !important; }
+  .cart-container { right: 6px !important; }
 
   .searchlogo,
   .questionlogo,
