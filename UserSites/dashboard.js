@@ -79,6 +79,45 @@ document.addEventListener("DOMContentLoaded", () => {
     navigateWithOverlay(target.href);
   }, true);
 
+  // Mobile Menu Toggle
+  const setupMobileMenu = () => {
+    const menuBtn = document.getElementById("mobileMenuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const shopModalLink = document.getElementById("shopmobilemodallink");
+    
+    if (!menuBtn || !mobileMenu) return;
+
+    menuBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      mobileMenu.classList.toggle("active");
+    });
+
+    // Close menu when a link is clicked
+    mobileMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.remove("active");
+      });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!menuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+        mobileMenu.classList.remove("active");
+      }
+    });
+
+    // Handle shop by modal on mobile
+    if (shopModalLink) {
+      shopModalLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        const shopmodal = document.getElementById("shopmodal");
+        if (shopmodal) shopmodal.click();
+      });
+    }
+  };
+
+  setupMobileMenu();
+
   const shopByLink = document.getElementById("shopmodal");
   const modalContainer = document.getElementById("modalContainer");
   if (shopByLink && modalContainer) {
@@ -741,6 +780,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 

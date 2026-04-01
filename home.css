@@ -801,6 +801,69 @@ body.site-dark .site-footer {
   color: #111;
 }
 
+/* Mobile Menu Button */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 11;
+}
+
+.mobile-menu-btn img {
+  height: 28px;
+  width: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-height: calc(100vh - 70px);
+  overflow-y: auto;
+}
+
+.mobile-menu.active {
+  display: flex;
+}
+
+.mobile-menu ul {
+  list-style: none;
+  padding: 12px 0;
+  margin: 0;
+  width: 100%;
+}
+
+.mobile-menu li {
+  float: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.mobile-menu a {
+  display: block;
+  padding: 14px 20px;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.mobile-menu a:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
 /* MOBILE SITE-WIDE PATCH */
 @media (max-width: 768px) {
   html,
@@ -823,20 +886,19 @@ body.site-dark .site-footer {
     padding: 8px 10px !important;
     min-height: 64px;
     align-items: center !important;
+    justify-content: center !important;
   }
 
   .navbar ul {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    overflow-x: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    padding-right: 120px;
+    display: none;
   }
 
-  .navbar ul::-webkit-scrollbar {
-    display: none;
+  .mobile-menu-btn {
+    display: block;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   .navbar li {
@@ -853,12 +915,14 @@ body.site-dark .site-footer {
 
   .logo {
     display: block !important;
-    height: 96px !important;
-    max-width: 55vw;
+    height: 56px !important;
+    max-width: 120px;
     object-fit: contain;
-    top: 54px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 0 auto;
   }
 
   .search-container,

@@ -738,6 +738,69 @@ body.site-dark .site-footer {
   color: #111;
 }
 
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 11;
+}
+
+.mobile-menu-btn img {
+  height: 28px;
+  width: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-height: calc(100vh - 70px);
+  overflow-y: auto;
+}
+
+.mobile-menu.active {
+  display: flex;
+}
+
+.mobile-menu ul {
+  list-style: none;
+  padding: 12px 0;
+  margin: 0;
+  width: 100%;
+}
+
+.mobile-menu li {
+  float: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.mobile-menu a {
+  display: block;
+  padding: 14px 20px;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.mobile-menu a:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
 /* MOBILE SITE-WIDE PATCH */
 @media (max-width: 768px) {
   html,
@@ -870,3 +933,4 @@ body.site-dark .site-footer {
     font-size: 11px !important;
   }
 }
+
