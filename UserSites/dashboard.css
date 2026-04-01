@@ -114,9 +114,17 @@ body {
 .searchlogo,
 .questionlogo,
 .userlogo {
-  height: 30px;
+  height: 34px;
   width: auto;
-  display: block;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
+  transition: transform 0.2s ease;
+}
+
+.userlogo:hover {
+  transform: scale(1.1);
 }
 
 .cart-badge {
