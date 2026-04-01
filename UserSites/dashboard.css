@@ -629,13 +629,11 @@ body.site-dark .site-footer {
 
   .navbar {
     padding: 8px 10px !important;
-    min-height: 64px;
-    align-items: center !important;
-  }
-
-  .navbar {
     min-height: 72px;
+    align-items: center !important;
     justify-content: space-between !important;
+    position: relative;
+    overflow: visible;
   }
 
   .navbar ul {
@@ -689,8 +687,8 @@ body.site-dark .site-footer {
 
   .logo {
     display: block !important;
-    height: 118px !important;
-    max-width: 240px;
+    height: 236px !important;
+    max-width: 480px;
     object-fit: contain;
     position: absolute !important;
     top: 50% !important;
@@ -709,17 +707,10 @@ body.site-dark .site-footer {
     transform: translateY(-50%) !important;
   }
 
-
-
-  .searchlogo,
-  .questionlogo,
-  .userlogo,
-  .cartlogo {
-    height: 24px!important;
-    width: auto !important;
-  }
-
-
+  .search-container { right: 132px !important; }
+  .question-container { right: 100px !important; }
+  .user-container { right: 68px !important; }
+  .cart-container { right: 28px !important; }
 
   .user-container .userlogo {
     width: 24px !important;
@@ -764,8 +755,8 @@ body.site-dark .site-footer {
   }
 
   .logo {
-    height: 98px !important;
-    max-width: 200px;
+    height: 196px !important;
+    max-width: 400px;
     position: absolute !important;
     top: 50% !important;
     left: 36% !important;
@@ -774,23 +765,16 @@ body.site-dark .site-footer {
     z-index: 11;
   }
 
-
+  .search-container { right: 132px !important; }
+  .question-container { right: 100px !important; }
+  .user-container { right: 68px !important; }
+  .cart-container { right: 28px !important; }
 
   .searchlogo,
   .questionlogo,
   .userlogo,
   .cartlogo {
-    height: 24px!important;
-    width: auto !important;
-  }
-
-
-
-  .user-container .userlogo {
-    width: 24px !important;
-    height: 24px !important;
-    border-radius: 50% !important;
-    object-fit: cover !important;
+    height: 22px !important;
   }
 
   .site-footer span,
@@ -798,20 +782,3 @@ body.site-dark .site-footer {
     font-size: 11px !important;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
