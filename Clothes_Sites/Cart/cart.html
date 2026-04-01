@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="cart.css">
+    <script src="cart.js" defer></script>
+</head>
+<body>
+    <nav class="navbar">
+    <ul>
+        <li><a href="/index.html">home</a></li>
+        <li><a href="#" id="shopmodal">shop by</a></li>
+        <li><a href="/Info/Contact.html">contact us</a></li>
+        <li><a href="/Info/About.html">about us</a></li>
+    </ul>
+
+    <img src="/Assets/logo.png" class="logo"/>
+    <div class="user-container" id="userButton" style="position: absolute; right: 130px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+    <img src="/Assets/user.png" class="userlogo" alt="User" style="height: 30px; width: auto;" />
+    </div>
+
+    <div class="question-container" id="questionButton" style="position: absolute; right: 180px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+    <img src="/Assets/question.png" class="questionlogo" alt="Question" style="height: 30px; width: auto;" />
+    </div>
+
+
+    <div class="search-container" id="searchButton">
+    <img src="/Assets/search.png" class="searchlogo" alt="Search" />
+    </div>
+
+    <div class="cart-container" id="cartButton">
+    <img src="/Assets/shoppingcart.png" class="cartlogo" alt="Cart" />
+    <div class="cart-badge">0</div>
+    </div>
+    </nav> 
+    </header>
+
+    <main>
+        <section class="cart-section" aria-label="Shopping Cart">
+            <h1>Your Shopping Cart</h1>
+            <div id="cartItems" class="cart-items">
+                <!-- Cart items will be dynamically added here -->
+            </div>
+            <div class="cart-summary">
+                <h2>Order Summary</h2>
+                <p>Total Items: <span id="totalItems">0</span></p>
+              <p>Total Price: <span class="peso-sign">&#8369;</span><span id="totalPrice">0.00</span></p>
+                <button id="checkoutButton" class="checkout-button">Proceed to Checkout</button>
+            </div>
+        </section>
+    </main>
+
+          <div id="modalContainer" class="modal-container">
+  <div class="modal">
+    <a href="/Clothes_Sites/Cropped Box/CboxShirt.html" target="_blank">
+      <img src="/Assets/Cropped.jfif" alt="Modal 1">
+    </a>
+  </div>
+  <div class="modal">
+    <a href="/Clothes_Sites/Regular Fit/RegShirt.html" target="_blank">
+      <img src="/Assets/Reg.jfif" alt="Modal 2">
+    </a>
+  </div>
+  <div class="modal">
+    <a href="/Clothes_Sites/Oversized/OverShirt.html" target="_blank">
+      <img src="/Assets/Over.jfif" alt="Modal 3">
+    </a>
+  </div>
+</div>
+
+  <footer class="site-footer" style="position: static; width: 100%; box-sizing: border-box; margin-top: auto; padding: 12px 16px; background: rgba(40, 40, 40, 0.72); color: #ffffff; opacity: 1; backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);">
+    <div style="display: flex; justify-content: center; align-items: center; gap: 28px; white-space: nowrap;">
+      <span>Contact: 0912 345 6789</span>
+      <span>Facebook Page: Staple Clothing</span>
+    </div>
+  </footer>
+
+  <!-- User Modal -->
+  <div id="userOverlay" class="user-overlay"></div>
+  <div id="userModal" class="user-modal">
+    <label for="userEmail">Email:</label>
+    <input type="email" id="userEmail" class="user-input" />
+    <label for="userPassword">Password:</label>
+    <input type="password" id="userPassword" class="user-input" />
+    <div class="user-actions">
+      <button type="button" class="signup-btn">Sign Up</button>
+      <button type="button" class="login-btn">Log in</button>
+    </div>
+  </div>
+
+  <!-- Sign Up Modal -->
+  <div id="signupModal" class="user-modal signup-modal">
+    <h3>Create Account</h3>
+    <label for="signupUsername">Username:</label>
+    <input type="text" id="signupUsername" class="user-input" />
+    <label for="signupEmail">Email:</label>
+    <input type="email" id="signupEmail" class="user-input" />
+    <label for="signupPassword">Password:</label>
+    <input type="password" id="signupPassword" class="user-input" />
+    <label for="signupConfirmPassword">Confirm Password:</label>
+    <input type="password" id="signupConfirmPassword" class="user-input" />
+    <div class="user-actions">
+      <button type="button" class="signup-submit-btn">Confirm</button>
+      <button type="button" class="login-btn">Already have an account</button>
+    </div>
+  </div>
+
+  
+
+  <!-- Search Modal -->
+  <div id="searchOverlay" class="search-overlay"></div>
+  <div id="searchModal" class="search-modal">
+    <input type="text" id="searchInput" class="search-input" placeholder="Search..." />
+  </div>
+</body>
+</html>
