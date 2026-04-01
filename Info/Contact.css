@@ -882,8 +882,8 @@ body.site-dark .site-footer {
 
   .logo {
     display: block !important;
-    height: 64px !important;
-    max-width: 132px;
+    height: 104px !important;
+    max-width: 210px;
     object-fit: contain;
     position: relative !important;
     top: auto !important;
@@ -951,8 +951,8 @@ body.site-dark .site-footer {
   }
 
   .logo {
-    height: 56px !important;
-    max-width: 116px;
+    height: 88px !important;
+    max-width: 176px;
     position: relative !important;
     top: auto !important;
     left: auto !important;
@@ -977,6 +977,10 @@ body.site-dark .site-footer {
     font-size: 11px !important;
   }
 }
+
+
+
+
 
 
 

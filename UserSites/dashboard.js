@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (
         modalContainer.classList.contains("show") &&
         !modalContainer.contains(e.target) &&
-        e.target.id !== "shopmodal"
+        e.target.id !== "shopmodal" && e.target.id !== "shopmobilemodallink"
       ) {
         modalContainer.classList.remove("show");
       }
@@ -783,6 +783,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
 
 
 

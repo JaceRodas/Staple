@@ -70,3 +70,4 @@ for (const file of jsFiles) {
 }
 
 console.log('entry-once-per-page-enabled');
+

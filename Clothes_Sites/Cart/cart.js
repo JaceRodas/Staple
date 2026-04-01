@@ -309,7 +309,7 @@ const shopByLink = document.getElementById("shopmodal");
       if (
         modalContainer.classList.contains("show") &&
         !modalContainer.contains(e.target) &&
-        e.target.id !== "shopmodal"
+        e.target.id !== "shopmodal" && e.target.id !== "shopmobilemodallink"
       ) {
         modalContainer.classList.remove("show");
       }
@@ -712,6 +712,8 @@ const shopByLink = document.getElementById("shopmodal");
   }
 
 });
+
+
 
 
 
