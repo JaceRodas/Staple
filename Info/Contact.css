@@ -902,7 +902,7 @@ body.site-dark .site-footer {
 
 @media (max-width: 480px) {
   .navbar ul {
-    padding-right: 108px;
+    display: none;
   }
 
   .navbar a,
@@ -912,14 +912,20 @@ body.site-dark .site-footer {
   }
 
   .logo {
-    height: 78px !important;
-    top: 50px !important;
+    height: 40px !important;
+    margin: 0 4px !important;
   }
 
-  .search-container { right: 78px !important; }
-  .question-container { right: 54px !important; }
-  .user-container { right: 30px !important; }
-  .cart-container { right: 6px !important; }
+  .search-container,
+  .question-container,
+  .user-container,
+  .cart-container {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    margin-left: 2px !important;
+    margin-right: 2px !important;
+  }
 
   .searchlogo,
   .questionlogo,

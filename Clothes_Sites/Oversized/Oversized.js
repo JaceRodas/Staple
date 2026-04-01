@@ -47,11 +47,15 @@ document.addEventListener("DOMContentLoaded", () => {  // Page transition overla
     if (!profileImage) return;
 
     userLogo.src = profileImage;
-    userLogo.style.width = "36px";
-    userLogo.style.height = "36px";
+    userLogo.style.width = "32px";
+    userLogo.style.height = "32px";
     userLogo.style.objectFit = "cover";
-    userLogo.style.borderRadius = "999px";
+    userLogo.style.borderRadius = "50%";
     userLogo.style.border = "2px solid rgba(0, 0, 0, 0.9)";
+    userLogo.style.minWidth = "32px";
+    userLogo.style.minHeight = "32px";
+    userLogo.style.maxWidth = "32px";
+    userLogo.style.maxHeight = "32px";
     userLogo.style.boxSizing = "border-box";
   };
 
@@ -782,6 +786,7 @@ const shopByLink = document.getElementById("shopmodal");
   }
 
 });
+
 
 
 

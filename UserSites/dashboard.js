@@ -369,10 +369,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const img = localStorage.getItem(profileImageKey);
     if (img) {
       navbarUserLogo.src = img;
-      navbarUserLogo.style.width = "36px";
-      navbarUserLogo.style.height = "36px";
+      navbaruserLogo.style.width = "32px";
+      navbaruserLogo.style.height = "32px";
       navbarUserLogo.style.objectFit = "cover";
-      navbarUserLogo.style.borderRadius = "999px";
+      navbaruserLogo.style.borderRadius = "50%";
       navbarUserLogo.style.border = "2px solid rgba(0, 0, 0, 0.9)";
       navbarUserLogo.style.boxSizing = "border-box";
     }
@@ -780,6 +780,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
