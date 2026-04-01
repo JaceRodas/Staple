@@ -372,10 +372,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const img = localStorage.getItem(profileImageKey);
     if (img) {
       navbarUserLogo.src = img;
-      navbaruserLogo.style.width = "36px";
-      navbaruserLogo.style.height = "36px";
+      navbarUserLogo.style.width = "36px";
+      navbarUserLogo.style.height = "36px";
       navbarUserLogo.style.objectFit = "cover";
-      navbaruserLogo.style.borderRadius = "999px";
+      navbarUserLogo.style.borderRadius = "999px";
       navbarUserLogo.style.border = "2px solid rgba(0, 0, 0, 0.9)";
       navbarUserLogo.style.boxSizing = "border-box";
     }
@@ -629,14 +629,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const idx = Number(editAddressBtn.dataset.index);
       const current = data.addresses[idx];
       if (!current) return;
-      const label = prompt("Address label:", current.label);
-      if (!label) return;
-      const line = prompt("Address line:", current.line);
-      if (!line) return;
-      current.label = label.trim();
-      current.line = line.trim();
-      saveData();
-      renderAll();
+      createInputModal("Edit Address", [
+        { name: "label", label: "Address Label", placeholder: "Address Label", value: current.label },
+        { name: "line", label: "Address Line", placeholder: "Street, City", value: current.line }
+      ], (values) => {
+        if (!values.label || !values.line) return;
+        current.label = values.label;
+        current.line = values.line;
+        saveData();
+        renderAll();
+      });
     }
 
     const deleteAddressBtn = e.target.closest(".delete-address-btn");
@@ -651,31 +653,82 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   const addPaymentBtn = document.getElementById("addPaymentBtn");
+  const createInputModal = (title, fields, onSubmit) => {
+    const modal = document.createElement("div");
+    modal.className = "input-modal-overlay";
+    modal.innerHTML = `
+      <div class="input-modal-box">
+        <div class="input-modal-header"><h3>${title}</h3></div>
+        <form class="input-modal-form">
+          ${fields.map((f) => `
+            <div class="input-modal-field">
+              <label>${f.label}</label>
+              <input type="text" placeholder="${f.placeholder}" class="modal-input" data-field="${f.name}" value="${f.value || ""}" />
+            </div>
+          `).join("")}
+          <div class="input-modal-buttons">
+            <button type="button" class="modal-cancel-btn">Cancel</button>
+            <button type="submit" class="modal-submit-btn">Submit</button>
+          </div>
+        </form>
+      </div>
+    `;
+    
+    const overlay = modal;
+    const form = modal.querySelector(".input-modal-form");
+    const cancelBtn = modal.querySelector(".modal-cancel-btn");
+    
+    const closeModal = () => overlay.remove();
+    
+    cancelBtn.addEventListener("click", closeModal);
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeModal();
+    });
+    
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const values = {};
+      fields.forEach((f) => {
+        const input = form.querySelector(`[data-field="${f.name}"]`);
+        values[f.name] = input ? input.value.trim() : "";
+      });
+      closeModal();
+      onSubmit(values);
+    });
+    
+    document.body.appendChild(overlay);
+  };
+
   if (addPaymentBtn) {
     addPaymentBtn.addEventListener("click", () => {
-      const method = prompt("Add card / e-wallet label:", "Visa ending 1111");
-      if (!method) return;
-      data.payments.unshift({ id: "P-" + Date.now(), label: method.trim(), type: "custom" });
-      saveData();
-      renderAll();
+      createInputModal("Add Payment Method", [
+        { name: "method", label: "Card / E-wallet Label", placeholder: "Visa ending 1111", value: "" }
+      ], (values) => {
+        if (!values.method) return;
+        data.payments.unshift({ id: "P-" + Date.now(), label: values.method, type: "custom" });
+        saveData();
+        renderAll();
+      });
     });
   }
 
   const addAddressBtn = document.getElementById("addAddressBtn");
   if (addAddressBtn) {
     addAddressBtn.addEventListener("click", () => {
-      const label = prompt("Address label:", "New Address");
-      if (!label) return;
-      const line = prompt("Address line:", "Street, City");
-      if (!line) return;
-      data.addresses.push({
-        id: "A-" + Date.now(),
-        label: label.trim(),
-        line: line.trim(),
-        isDefault: data.addresses.length === 0
+      createInputModal("Add Address", [
+        { name: "label", label: "Address Label", placeholder: "New Address", value: "" },
+        { name: "line", label: "Address Line", placeholder: "Street, City", value: "" }
+      ], (values) => {
+        if (!values.label || !values.line) return;
+        data.addresses.push({
+          id: "A-" + Date.now(),
+          label: values.label,
+          line: values.line,
+          isDefault: data.addresses.length === 0
+        });
+        saveData();
+        renderAll();
       });
-      saveData();
-      renderAll();
     });
   }
 
