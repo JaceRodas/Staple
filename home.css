@@ -952,7 +952,7 @@ body.site-dark .site-footer {
     object-fit: contain;
     position: absolute !important;
     top: 50% !important;
-    left: 38% !important;
+    left: 42% !important;
     transform: translate(-50%, -50%) !important;
     margin: 0;
     z-index: 11;
@@ -967,9 +967,9 @@ body.site-dark .site-footer {
     transform: translateY(-50%) !important;
   }
 
-  .search-container { right: 122px !important; }
-  .question-container { right: 92px !important; }
-  .user-container { right: 62px !important; }
+  .search-container { right: 108px !important; }
+  .question-container { right: 78px !important; }
+  .user-container { right: 50px !important; }
   .cart-container { right: 28px !important; }
 
   .user-container .userlogo {
@@ -1019,15 +1019,15 @@ body.site-dark .site-footer {
     max-width: 400px;
     position: absolute !important;
     top: 50% !important;
-    left: 36% !important;
+    left: 40% !important;
     transform: translate(-50%, -50%) !important;
     margin: 0;
     z-index: 11;
   }
 
-  .search-container { right: 122px !important; }
-  .question-container { right: 92px !important; }
-  .user-container { right: 62px !important; }
+  .search-container { right: 108px !important; }
+  .question-container { right: 78px !important; }
+  .user-container { right: 50px !important; }
   .cart-container { right: 28px !important; }
 
   .searchlogo,
@@ -1042,4 +1042,5 @@ body.site-dark .site-footer {
     font-size: 11px !important;
   }
 }
+
 
