@@ -4,7 +4,8 @@ body {
     font-family: "Spectral", cursive, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 
   display: flex;
-  flex-direction: column;
+  flex-direction: column;
+  background: #EFE0CD;
 }
 body::-webkit-scrollbar{
     width: 0;
@@ -219,7 +220,8 @@ main {
 
 /* Prevent extra blank scroll space at bottom */
 body {
-  min-height: 100vh; /* only as tall as the screen */
+  min-height: 100vh; /* only as tall as the screen */
+  background: #EFE0CD;
 }
 
 /* ---------- SEARCH ICON ---------- */
@@ -680,7 +682,7 @@ body > main {
 /* ---------- PAGE TRANSITION OVERLAY ---------- */
 html,
 body {
-  background: #ffffff;
+  background: #EFE0CD;
 }
 
 body::before {
@@ -881,6 +883,7 @@ body.site-dark .site-footer {
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
+  background: #EFE0CD;
   }
 
   .header {

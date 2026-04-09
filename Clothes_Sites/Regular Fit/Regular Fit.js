@@ -392,11 +392,16 @@ const shopByLink = document.getElementById("shopmodal");
 
   // --- Add to Cart functionality ---
   addToCartBtn.addEventListener("click", () => {
+    const productName = document.querySelector("main .info h1")?.textContent?.trim() || document.title || "Shirt";
+    const priceText = document.querySelector("main .info p")?.textContent || "0 Php";
+    const parsedPrice = Number((priceText.match(/\d+/) || ["0"])[0]);
+    const productImage = document.querySelector("main img")?.getAttribute("src") || "/Clothes/Regular_S.jfif";
+
     const product = {
-      name: "Regular Fit (Black)",
-      price: 269,
+      name: productName,
+      price: parsedPrice,
       quantity: quantity,
-      image: "/Clothes/Regular_S.jfif",
+      image: productImage,
     };
 
     // Retrieve existing cart or create new

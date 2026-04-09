@@ -4,7 +4,7 @@ body {
   font-family: "Spectral", serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   display: flex;
   flex-direction: column;
-  background: #f8f8f8;
+  background: #EFE0CD;
 }
 
 .header {
@@ -598,7 +598,7 @@ body.site-dark .modal-cancel-btn:hover {
 /* ---------- PAGE TRANSITION OVERLAY ---------- */
 html,
 body {
-  background: #ffffff;
+  background: #EFE0CD;
 }
 
 body::before {
@@ -794,7 +794,8 @@ body.site-dark .site-footer {
   body {
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: hidden;
+  background: #EFE0CD;
   }
 
   .header {

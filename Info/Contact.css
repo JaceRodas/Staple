@@ -4,7 +4,8 @@ body {
     font-family: "Spectral", cursive, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 
   display: flex;
-  flex-direction: column;
+  flex-direction: column;
+  background: #EFE0CD;
 }
 body::-webkit-scrollbar{
     width: 0;
@@ -389,11 +390,13 @@ main {
   body {
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: hidden;
+  background: #EFE0CD;
   }
 
   body {
-    min-height: 100dvh;
+    min-height: 100dvh;
+  background: #EFE0CD;
   }
 
   img,
@@ -655,7 +658,7 @@ body > main {
 /* ---------- PAGE TRANSITION OVERLAY ---------- */
 html,
 body {
-  background: #ffffff;
+  background: #EFE0CD;
 }
 
 body::before {
@@ -809,6 +812,7 @@ body.site-dark .site-footer {
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
+  background: #EFE0CD;
   }
 
   .header {

@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+      
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regular Fit</title>
-    <link rel="stylesheet" href="RegShirt.css">
-    <script src="RegShirt.js"></script>
+    <title>Green Regular Shirt</title>
+    <link rel="stylesheet" href="Regular Fit.css">
+    <script src="Regular Fit.js"></script>
 </head>
 <body>
-    <header class="header">
     <nav class="navbar">
     <button class="mobile-menu-btn" id="mobileMenuBtn">
       <img src="/Assets/menu.png" alt="Menu" />
@@ -23,6 +22,7 @@
         <li><a href="/Info/Contact.html">contact us</a></li>
         <li><a href="/Info/About.html">about us</a></li>
     </ul>
+    
 
     <img src="/Assets/logo.png" class="logo"/>
     
@@ -52,18 +52,46 @@
     <img src="/Assets/shoppingcart.png" class="cartlogo" alt="Cart" />
     <div class="cart-badge">0</div>
     </div>
-
+    
     </nav> 
     </header>
-    
-  <div id="modalContainer" class="modal-container">
+    <main>
+      <img src="/Clothes/green regular.png" alt="Green Regular Shirt" loading="lazy" draggable="false">
+    <div class="info">
+        <h1>Green Regular Shirt</h1>
+        <p>299 Php</p>
+
+
+        <div class="quantity-container">
+        <p>Quantity:</p>
+    <div class="quantity-controls">
+        <button id="decrease">−</button>
+        <span id="quantity">1</span>
+        <button id="increase">+</button>
+        </div>
+    </div>
+
+        <button class="add-to-cart">Add to cart</button>
+        <button type="button" class="add-to-wishlist" data-product-name="Green Regular Shirt" data-product-image="/Clothes/green regular.png">Add to wishlist</button>
+    </div>
+      <section class="reviews-section">
+        <h2>Reviews</h2>
+        <form id="reviewForm" class="review-form">
+          <textarea id="reviewText" placeholder="Write your review" required></textarea>
+          <button type="submit" class="submit-review-btn">Submit Review</button>
+        </form>
+        <div id="reviewList" class="review-list"></div>
+      </section>
+    </main>
+
+          <div id="modalContainer" class="modal-container">
   <div class="modal">
     <a href="/Clothes_Sites/Cropped Box/CboxShirt.html" target="_blank">
       <img src="/Assets/Cropped.jfif" alt="Modal 1">
     </a>
   </div>
   <div class="modal">
-    <a href="/Clothes_Sites/Regular Fit/Regular Fit.html" target="_blank">
+    <a href="/Clothes_Sites/Regular Fit/RegShirt.html" target="_blank">
       <img src="/Assets/Reg.jfif" alt="Modal 2">
     </a>
   </div>
@@ -73,58 +101,6 @@
     </a>
   </div>
 </div>
-
-    <main>
-      <section class="gallery" aria-label="Clothes gallery">
-        <div class="gallery-cell">
-          <div class="gallery-item">
-            <img class="s" src="/Clothes/Regular_S.jfif" alt="Cropped S" loading="lazy" draggable="false">
-            <img class="m" src="/Clothes/Regular_M.jfif" alt="Cropped M" loading="lazy" draggable="false">
-            <a class="image-link" href="/Clothes_Sites/Regular Fit/Regular Fit.html" aria-label="Cropped Box Series"></a>
-          </div>
-          <a class="product-link" href="/Clothes_Sites/Regular Fit/Regular Fit.html">
-            <div class="product-title">Plain Black Regular Shirt</div>
-            <div class="price">269 Php</div>
-          </a>
-        </div>
-
-        <div class="gallery-cell">
-          <div class="gallery-item">
-            <img class="s" src="/Clothes/gray regular.png" alt="Gray Regular" loading="lazy" draggable="false">
-            <img class="m" src="/Clothes/gray regular.png" alt="Gray Regular" loading="lazy" draggable="false">
-            <a class="image-link" href="/Clothes_Sites/Regular Fit/GrayRegular.html" aria-label="Regular Fit Series"></a>
-          </div>
-          <a class="product-link" href="/Clothes_Sites/Regular Fit/GrayRegular.html">
-            <div class="product-title">Gray Regular Shirt</div>
-            <div class="price">289 Php</div>
-          </a>
-        </div>
-
-        <div class="gallery-cell">
-          <div class="gallery-item">
-            <img class="s" src="/Clothes/gray stripe regular.png" alt="Gray Stripe Regular" loading="lazy" draggable="false">
-            <img class="m" src="/Clothes/gray stripe regular.png" alt="Gray Stripe Regular" loading="lazy" draggable="false">
-            <a class="image-link" href="/Clothes_Sites/Regular Fit/AllOverStreetGrid.html" aria-label="Regular Fit Series"></a>
-          </div>
-          <a class="product-link" href="/Clothes_Sites/Regular Fit/AllOverStreetGrid.html">
-            <div class="product-title">[All-Over Street Grid] Regular Shirt</div>
-            <div class="price">299 Php</div>
-          </a>
-        </div>
-
-        <div class="gallery-cell">
-          <div class="gallery-item">
-            <img class="s" src="/Clothes/green regular.png" alt="Green Regular" loading="lazy" draggable="false">
-            <img class="m" src="/Clothes/green regular.png" alt="Green Regular" loading="lazy" draggable="false">
-            <a class="image-link" href="/Clothes_Sites/Regular Fit/GreenRegular.html" aria-label="Regular Fit Series"></a>
-          </div>
-          <a class="product-link" href="/Clothes_Sites/Regular Fit/GreenRegular.html">
-            <div class="product-title">Green Regular Shirt</div>
-            <div class="price">299 Php</div>
-          </a>
-        </div>
-      </section>
-</main>
 
   <footer class="site-footer" style="position: static; width: 100%; box-sizing: border-box; margin-top: auto; padding: 12px 16px; background: rgba(40, 40, 40, 0.72); color: #ffffff; opacity: 1; backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);">
     <div style="display: flex; justify-content: center; align-items: center; gap: 28px; white-space: nowrap;">
@@ -170,6 +146,5 @@
   <div id="searchModal" class="search-modal">
     <input type="text" id="searchInput" class="search-input" placeholder="Search..." />
   </div>
-
-  </body>
+</body>
 </html>
