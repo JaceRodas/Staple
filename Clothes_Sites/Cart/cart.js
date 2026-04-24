@@ -218,6 +218,15 @@ document.addEventListener("DOMContentLoaded", () => {  // Page transition overla
 
   setupFaqModal();
 
+  const customizeButton = document.getElementById("customizeButton");
+  if (customizeButton) {
+    customizeButton.addEventListener("click", () => {
+      const customizePath = "/Clothes_Sites/Customize/Customize.html";
+      if (window.location.pathname === customizePath) return;
+      navigateWithOverlay(customizePath);
+    });
+  }
+
 
   const navigateWithOverlay = (url) => {
     if (!url || !document.body) return;
@@ -436,14 +445,15 @@ const shopByLink = document.getElementById("shopmodal");
       const unitPrice = Number(item.price || 0);
       const quantity = Number(item.quantity || 0);
       const lineTotal = unitPrice * quantity;
+      const itemName = item.name || item.id || "Shirt";
 
       const itemDiv = document.createElement("div");
       itemDiv.classList.add("cart-item");
 
       itemDiv.innerHTML = `
-        <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+        <img src="${item.image}" alt="${itemName}" class="cart-item-image">
         <div class="cart-item-info">
-          <h3>${item.name}</h3>
+          <h3>${itemName}</h3>
           <p class="cart-item-price">&#8369;${unitPrice.toFixed(2)} each</p>
           <div class="cart-item-controls">
             <button class="decrease-qty qty-btn" data-index="${index}" aria-label="Decrease quantity">&#8722;</button>

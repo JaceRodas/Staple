@@ -286,6 +286,15 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   setupFaqModal();
+  
+    const customizeButton = document.getElementById("customizeButton");
+    if (customizeButton) {
+      customizeButton.addEventListener("click", () => {
+        const customizePath = "/Clothes_Sites/Customize/Customize.html";
+        if (window.location.pathname === customizePath) return;
+        navigateWithOverlay(customizePath);
+      });
+    }
 
   const navbar = document.querySelector(".navbar");
   if (navbar) {

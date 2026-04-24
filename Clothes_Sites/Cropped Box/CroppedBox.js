@@ -217,6 +217,15 @@ document.addEventListener("DOMContentLoaded", () => {  // Page transition overla
 
   setupFaqModal();
 
+  const customizeButton = document.getElementById("customizeButton");
+  if (customizeButton) {
+    customizeButton.addEventListener("click", () => {
+      const customizePath = "/Clothes_Sites/Customize/Customize.html";
+      if (window.location.pathname === customizePath) return;
+      navigateWithOverlay(customizePath);
+    });
+  }
+
 
   const navigateWithOverlay = (url) => {
     if (!url || !document.body) return;
@@ -293,6 +302,25 @@ const shopByLink = document.getElementById("shopmodal");
   const addToCartBtn = document.querySelector(".add-to-cart");
   const cartBadge = document.querySelector(".cart-badge");
   const cartButton = document.getElementById("cartButton");
+  const productTitle = document.querySelector("main .info h1");
+  const slugifyProductName = (value) =>
+    String(value || "")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+  const resolvedProductName = productTitle?.textContent?.trim() || document.title || "Shirt";
+  const resolvedProductId = slugifyProductName(resolvedProductName);
+
+  if (productTitle && !productTitle.id) {
+    productTitle.id = resolvedProductId;
+  }
+
+  if (addToCartBtn) {
+    addToCartBtn.dataset.productName = resolvedProductName;
+    addToCartBtn.dataset.productId = resolvedProductId;
+  }
   
   if (cartButton) {
     cartButton.addEventListener("click", () => {
@@ -392,12 +420,14 @@ const shopByLink = document.getElementById("shopmodal");
 
   // --- Add to Cart functionality ---
   addToCartBtn.addEventListener("click", () => {
-    const productName = document.querySelector("main .info h1")?.textContent?.trim() || document.title || "Shirt";
+    const productName = addToCartBtn.dataset.productName || productTitle?.textContent?.trim() || document.title || "Shirt";
+    const productId = addToCartBtn.dataset.productId || slugifyProductName(productName);
     const priceText = document.querySelector("main .info p")?.textContent || "0 Php";
     const parsedPrice = Number((priceText.match(/\d+/) || ["0"])[0]);
     const productImage = document.querySelector("main img")?.getAttribute("src") || "/Clothes/Regular_S.jfif";
 
     const product = {
+      id: productId,
       name: productName,
       price: parsedPrice,
       quantity: quantity,
@@ -408,7 +438,7 @@ const shopByLink = document.getElementById("shopmodal");
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
     // Check if this product already exists
-    const existingIndex = cart.findIndex(item => item.name === product.name);
+    const existingIndex = cart.findIndex(item => (item.id || item.name) === product.id);
     if (existingIndex > -1) {
       cart[existingIndex].quantity += product.quantity;
     } else {

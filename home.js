@@ -204,6 +204,15 @@ document.addEventListener("DOMContentLoaded", () => {  // Page transition overla
 
   setupFaqModal();
 
+  const customizeButton = document.getElementById("customizeButton");
+  if (customizeButton) {
+    customizeButton.addEventListener("click", () => {
+      const customizePath = "/Clothes_Sites/Customize/Customize.html";
+      if (window.location.pathname === customizePath) return;
+      navigateWithOverlay(customizePath);
+    });
+  }
+
 
   const navigateWithOverlay = (url) => {
     if (!url || !document.body) return;
