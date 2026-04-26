@@ -1027,7 +1027,8 @@ body.site-dark .site-footer {
   }
 
   .search-container { right: 108px !important; }
-  .customize-container { right: 148px !important; }
+  .customize-container { right: 132px !important; }
+  .customize-container .searchlogo { height: 24px !important; }
   .question-container { right: 78px !important; }
   .user-container { right: 50px !important; }
   .cart-container { right: 28px !important; }
@@ -1086,7 +1087,8 @@ body.site-dark .site-footer {
   }
 
   .search-container { right: 108px !important; }
-  .customize-container { right: 148px !important; }
+  .customize-container { right: 132px !important; }
+  .customize-container .searchlogo { height: 24px !important; }
   .question-container { right: 78px !important; }
   .user-container { right: 50px !important; }
   .cart-container { right: 28px !important; }
