@@ -420,98 +420,101 @@ const shopByLink = document.getElementById("shopmodal");
   const totalPriceSpan = document.getElementById("totalPrice");
   const cartBadge = document.querySelector(".cart-badge");
 
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  let totalItems = 0;
-  let totalPrice = 0;
-
-  // update badge if present
-  if (cartBadge) {
-    const badgeCount = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
-    cartBadge.textContent = badgeCount;
-  }
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
   if (!cartItemsContainer) {
     // no cart UI on this page (defensive)
     return;
   }
 
-  cartItemsContainer.innerHTML = ""; // clear
+  const renderCart = () => {
+    let totalItems = 0;
+    let totalPrice = 0;
 
-  if (cart.length === 0) {
-    cartItemsContainer.innerHTML = '<p class="empty-cart-message">Your cart is empty.</p>';
-  } else {
-    cart.forEach((item, index) => {
-      const unitPrice = Number(item.price || 0);
-      const quantity = Number(item.quantity || 0);
-      const lineTotal = unitPrice * quantity;
-      const itemName = item.name || item.id || "Shirt";
+    if (cartBadge) {
+      const badgeCount = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+      cartBadge.textContent = String(badgeCount);
+    }
 
-      const itemDiv = document.createElement("div");
-      itemDiv.classList.add("cart-item");
+    cartItemsContainer.innerHTML = "";
 
-      itemDiv.innerHTML = `
-        <img src="${item.image}" alt="${itemName}" class="cart-item-image">
-        <div class="cart-item-info">
-          <h3>${itemName}</h3>
-          <p class="cart-item-price">&#8369;${unitPrice.toFixed(2)} each</p>
-          <div class="cart-item-controls">
-            <button class="decrease-qty qty-btn" data-index="${index}" aria-label="Decrease quantity">&#8722;</button>
-            <span class="item-qty">${item.quantity}</span>
-            <button class="increase-qty qty-btn" data-index="${index}" aria-label="Increase quantity">+</button>
-            <button class="remove-item" data-index="${index}">Remove</button>
+    if (cart.length === 0) {
+      cartItemsContainer.innerHTML = '<p class="empty-cart-message">Your cart is empty.</p>';
+    } else {
+      cart.forEach((item, index) => {
+        const unitPrice = Number(item.price || 0);
+        const quantity = Number(item.quantity || 0);
+        const lineTotal = unitPrice * quantity;
+        const itemName = item.name || item.id || "Shirt";
+
+        const itemDiv = document.createElement("div");
+        itemDiv.classList.add("cart-item");
+
+        itemDiv.innerHTML = `
+          <img src="${item.image}" alt="${itemName}" class="cart-item-image">
+          <div class="cart-item-info">
+            <h3>${itemName}</h3>
+            <p class="cart-item-price">&#8369;${unitPrice.toFixed(2)} each</p>
+            <div class="cart-item-controls">
+              <button class="decrease-qty qty-btn" data-index="${index}" aria-label="Decrease quantity">&#8722;</button>
+              <span class="item-qty">${quantity}</span>
+              <button class="increase-qty qty-btn" data-index="${index}" aria-label="Increase quantity">+</button>
+              <button class="remove-item" data-index="${index}">Remove</button>
+            </div>
           </div>
-        </div>
-        <div class="cart-line-total">
-          <strong>&#8369;${lineTotal.toFixed(2)}</strong>
-        </div>
-      `;
+          <div class="cart-line-total">
+            <strong>&#8369;${lineTotal.toFixed(2)}</strong>
+          </div>
+        `;
 
-      cartItemsContainer.appendChild(itemDiv);
+        cartItemsContainer.appendChild(itemDiv);
 
-      totalItems += quantity;
-      totalPrice += lineTotal;
-    });
+        totalItems += quantity;
+        totalPrice += lineTotal;
+      });
+    }
 
-    // add event listeners for qty buttons and remove buttons (delegation)
-    cartItemsContainer.addEventListener('click', (e) => {
-      const incBtn = e.target.closest('.increase-qty');
-      const decBtn = e.target.closest('.decrease-qty');
-      const removeBtn = e.target.closest('.remove-item');
+    totalItemsSpan.textContent = String(totalItems);
+    totalPriceSpan.textContent = totalPrice.toFixed(2);
+  };
 
-      let updated = false;
+  cartItemsContainer.addEventListener("click", (e) => {
+    const incBtn = e.target.closest(".increase-qty");
+    const decBtn = e.target.closest(".decrease-qty");
+    const removeBtn = e.target.closest(".remove-item");
 
-      if (incBtn) {
-        const idx = Number(incBtn.dataset.index);
-        cart[idx].quantity = (cart[idx].quantity || 0) + 1;
+    let updated = false;
+
+    if (incBtn) {
+      const idx = Number(incBtn.dataset.index);
+      if (cart[idx]) {
+        cart[idx].quantity = (Number(cart[idx].quantity) || 0) + 1;
         updated = true;
-      } else if (decBtn) {
-        const idx = Number(decBtn.dataset.index);
-        if (cart[idx].quantity > 1) {
-          cart[idx].quantity -= 1;
-          updated = true;
-        } else {
-          // optional: remove if reaches 0
-          cart.splice(idx, 1);
-          updated = true;
-        }
-      } else if (removeBtn) {
-        const idx = Number(removeBtn.dataset.index);
+      }
+    } else if (decBtn) {
+      const idx = Number(decBtn.dataset.index);
+      if (!cart[idx]) return;
+      if ((Number(cart[idx].quantity) || 0) > 1) {
+        cart[idx].quantity -= 1;
+      } else {
+        cart.splice(idx, 1);
+      }
+      updated = true;
+    } else if (removeBtn) {
+      const idx = Number(removeBtn.dataset.index);
+      if (idx >= 0 && idx < cart.length) {
         cart.splice(idx, 1);
         updated = true;
       }
+    }
 
-      if (updated) {
-        // save and re-render by simply reloading the page to keep code simple
-        localStorage.setItem("cart", JSON.stringify(cart));
-        window.location.reload();
-      }
-    });
-  }
+    if (updated) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+  });
 
-  // update totals
-  totalItemsSpan.textContent = totalItems;
-  totalPriceSpan.textContent = totalPrice.toFixed(2);
+  renderCart();
   // --------- USER MODAL SETUP ---------
   const userButton = document.getElementById("userButton");
   const userOverlay = document.getElementById("userOverlay");

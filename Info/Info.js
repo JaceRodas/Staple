@@ -409,7 +409,7 @@ document.addEventListener("DOMContentLoaded", () => {  // Page transition overla
   const cartButton = document.getElementById("cartButton");
   if (cartButton) {
     cartButton.addEventListener("click", () => {
-      navigateWithOverlay("../Clothes_Sites/Cart/cart.html");
+      navigateWithOverlay("/Clothes_Sites/Cart/cart.html");
     });
   }
 
@@ -512,7 +512,7 @@ document.addEventListener("DOMContentLoaded", () => {  // Page transition overla
   const signupConfirmButton = document.querySelector(".signup-submit-btn");
   const signupBackToLoginButton = signupModal ? signupModal.querySelector(".login-btn") : null;
   const loginSubmitButton = userModal ? userModal.querySelector(".login-btn") : null;
-  const userLandingPath = "../UserSites/dashboard.html";
+  const userLandingPath = "/UserSites/dashboard.html";
 
   const getSignupMessageEl = () => {
     if (!signupModal) return null;

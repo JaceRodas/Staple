@@ -63,7 +63,7 @@
       <div class="preview-panel">
         <div class="preview-stage" id="previewStage">
           <div class="preview-ribbon" id="previewRibbon">Plain Black Shirt</div>
-          <img id="shirtPreview" src="/Clothes/Oversized_S.jfif" alt="Plain Black Shirt preview" draggable="false">
+          <canvas id="shirtPreviewCanvas" width="720" height="760" aria-label="Plain Black Shirt preview"></canvas>
           <div class="preview-glow" aria-hidden="true"></div>
         </div>
       </div>
@@ -71,16 +71,14 @@
       <aside class="controls-panel">
         <div class="controls-header">
           <h2 id="shirtName">Plain Black Shirt</h2>
-          <p id="shirtSummary">Fitted, Black, Plain, Size M</p>
+          <p id="shirtSummary">Regular Fit, #1a1a1a, Plain, Size M</p>
         </div>
 
         <div class="control-group">
           <div class="group-label">Color</div>
           <div class="button-row" data-control="color">
-            <button type="button" class="choice-btn active" data-value="Black" data-accent="#1a1a1a" data-filter="none">Black</button>
-            <button type="button" class="choice-btn" data-value="Charcoal" data-accent="#4b4b4b" data-filter="brightness(0.82) contrast(1.1)">Charcoal</button>
-            <button type="button" class="choice-btn" data-value="Ivory" data-accent="#d9d2c3" data-filter="brightness(1.7) saturate(0.35) contrast(0.9) invert(0.05)">Ivory</button>
-            <button type="button" class="choice-btn" data-value="Navy" data-accent="#24406b" data-filter="brightness(0.88) saturate(1.18) hue-rotate(185deg)">Navy</button>
+            <input type="color" id="customColorPicker" value="#1a1a1a" aria-label="Choose any shirt color">
+            <input type="text" id="customColorCode" value="#1a1a1a" placeholder="#1a1a1a or rgb(26,26,26)" aria-label="Enter custom color code">
           </div>
         </div>
 
@@ -107,8 +105,8 @@
         <div class="control-group">
           <div class="group-label">Type</div>
           <div class="button-row" data-control="type">
-            <button type="button" class="choice-btn active" data-value="Fitted">Fitted</button>
-            <button type="button" class="choice-btn" data-value="Loose">Loose</button>
+            <button type="button" class="choice-btn active" data-value="Regular Fit">Regular Fit</button>
+            <button type="button" class="choice-btn" data-value="Oversized">Oversized</button>
             <button type="button" class="choice-btn" data-value="Cropped Box">Cropped Box</button>
           </div>
         </div>
@@ -116,7 +114,7 @@
         <div class="control-group compact-info">
           <div class="meta-chip" id="priceChip">Base price: &#8369;299.00</div>
           <div class="meta-chip" id="designChip">Plain design</div>
-          <div class="meta-chip" id="typeChip">Fitted silhouette</div>
+          <div class="meta-chip" id="typeChip">Regular Fit template</div>
         </div>
 
         <div class="action-row">
@@ -148,11 +146,50 @@
     </div>
   </div>
 
+  <!-- User Modal -->
+  <div id="userOverlay" class="user-overlay"></div>
+  <div id="userModal" class="user-modal">
+    <label for="userEmail">Email:</label>
+    <input type="email" id="userEmail" class="user-input" />
+    <label for="userPassword">Password:</label>
+    <input type="password" id="userPassword" class="user-input" />
+    <div class="user-actions">
+      <button type="button" class="signup-btn">Sign Up</button>
+      <button type="button" class="login-btn">Log in</button>
+    </div>
+  </div>
+
+  <!-- Sign Up Modal -->
+  <div id="signupModal" class="user-modal signup-modal">
+    <h3>Create Account</h3>
+    <label for="signupUsername">Username:</label>
+    <input type="text" id="signupUsername" class="user-input" />
+    <label for="signupEmail">Email:</label>
+    <input type="email" id="signupEmail" class="user-input" />
+    <label for="signupPassword">Password:</label>
+    <input type="password" id="signupPassword" class="user-input" />
+    <label for="signupConfirmPassword">Confirm Password:</label>
+    <input type="password" id="signupConfirmPassword" class="user-input" />
+    <div class="user-actions">
+      <button type="button" class="signup-submit-btn">Confirm</button>
+      <button type="button" class="login-btn">Already have an account</button>
+    </div>
+  </div>
+
+  <!-- Search Modal -->
+  <div id="searchOverlay" class="search-overlay"></div>
+  <div id="searchModal" class="search-modal">
+    <input type="text" id="searchInput" class="search-input" placeholder="Search..." />
+  </div>
+
   <footer class="site-footer customize-footer">
     <div class="footer-inner">
       <span>Contact: 0912 345 6789</span>
       <span>Facebook Page: Staple Clothing</span>
     </div>
   </footer>
+  <script src="/search.js" defer></script>
 </body>
 </html>
+
+
