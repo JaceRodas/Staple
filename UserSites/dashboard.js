@@ -332,6 +332,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const dashboardStorageKey = "stapleDashboardData_" + currentUser.email;
   const profileImageKey = "stapleProfileImage_" + currentUser.email;
 
+  const createCheckoutProfile = () => ({
+    fullName: currentUser.username || "",
+    email: currentUser.email || "",
+    phone: currentUser.phone || "",
+    address: "",
+    city: "",
+    province: "",
+    zip: "",
+    landmark: "",
+    preferredPaymentMethod: "card",
+    preferredCardBrand: "visa",
+    cardName: "",
+    cardNumber: "",
+    cardExpiry: "",
+    cardCvv: "",
+    gcashNumber: "",
+  });
+
   const createDefaultData = () => ({
     orders: [
       { id: "ORD-1001", item: "Regular Fit Shirt", status: "Processing", tracking: "Awaiting courier pickup", date: "2026-03-25" },
@@ -342,14 +360,7 @@ document.addEventListener("DOMContentLoaded", () => {
       { id: "W-1", name: "Regular Fit Shirt - White", onSale: false },
       { id: "W-2", name: "Cropped Box Shirt - Black", onSale: true }
     ],
-    payments: [
-      { id: "P-1", label: "Visa ending 4242", type: "card" },
-      { id: "P-2", label: "GCash - 09*********", type: "ewallet" }
-    ],
-    addresses: [
-      { id: "A-1", label: "Home", line: "Blk 12 Lot 3, Sample Street, City", isDefault: true },
-      { id: "A-2", label: "Work", line: "2nd Floor, Sample Building, City", isDefault: false }
-    ],
+    checkoutInfo: createCheckoutProfile(),
     settings: {
       secureCheckout: true,
       phone: currentUser.phone || ""
@@ -366,6 +377,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const saveData = () => {
     localStorage.setItem(dashboardStorageKey, JSON.stringify(data));
   };
+
+  const getCheckoutInfo = () => {
+    if (!data.checkoutInfo || typeof data.checkoutInfo !== "object") {
+      data.checkoutInfo = createCheckoutProfile();
+    }
+
+    data.checkoutInfo.fullName = data.checkoutInfo.fullName || currentUser.username || "";
+    data.checkoutInfo.email = data.checkoutInfo.email || currentUser.email || "";
+    data.checkoutInfo.phone = data.checkoutInfo.phone || data.settings.phone || currentUser.phone || "";
+    data.checkoutInfo.preferredPaymentMethod = String(data.checkoutInfo.preferredPaymentMethod || "card").toLowerCase();
+    data.checkoutInfo.preferredCardBrand = String(data.checkoutInfo.preferredCardBrand || "visa").toLowerCase();
+
+    return data.checkoutInfo;
+  };
+
+  const checkoutInfo = getCheckoutInfo();
 
   const statusClass = (status) => {
     const s = String(status || "").toLowerCase();
@@ -431,8 +458,97 @@ document.addEventListener("DOMContentLoaded", () => {
   const recentOrdersList = document.getElementById("recentOrdersList");
   const ordersList = document.getElementById("ordersList");
   const wishlistList = document.getElementById("wishlistList");
-  const paymentsList = document.getElementById("paymentsList");
-  const addressesList = document.getElementById("addressesList");
+  const checkoutInfoForm = document.getElementById("checkoutInfoForm");
+  const checkoutInfoMessage = document.getElementById("checkoutInfoMessage");
+  const checkoutPaymentButtons = Array.from(document.querySelectorAll(".checkout-method-btn"));
+  const checkoutPaymentPanels = Array.from(document.querySelectorAll(".checkout-payment-panel[data-payment-panel]"));
+  const checkoutBrandButtons = Array.from(document.querySelectorAll(".card-brand-btn"));
+  const cardBrandInfo = document.getElementById("cardBrandInfo");
+  const checkoutFieldIds = [
+    "checkoutFullName",
+    "checkoutEmail",
+    "checkoutPhone",
+    "checkoutAddress",
+    "checkoutCity",
+    "checkoutProvince",
+    "checkoutZip",
+    "checkoutLandmark",
+    "checkoutCardName",
+    "checkoutCardNumber",
+    "checkoutCardExpiry",
+    "checkoutCardCvv",
+    "checkoutGcashNumber",
+  ];
+
+  const getField = (id) => document.getElementById(id);
+
+  const updateCardBrandInfo = () => {
+    if (!cardBrandInfo) return;
+    const selectedBrand = String(checkoutInfo.preferredCardBrand || "visa").toLowerCase();
+    if (selectedBrand === "mastercard") {
+      cardBrandInfo.textContent = "Mastercard is a good fit for travel, shopping, and global card payments.";
+    } else {
+      cardBrandInfo.textContent = "Visa works well for everyday debit and credit payments.";
+    }
+  };
+
+  const syncCheckoutInfoForm = () => {
+    if (!checkoutInfoForm) return;
+
+    checkoutFieldIds.forEach((id) => {
+      const input = getField(id);
+      if (!input) return;
+
+      switch (id) {
+        case "checkoutFullName": input.value = checkoutInfo.fullName || ""; break;
+        case "checkoutEmail": input.value = checkoutInfo.email || ""; break;
+        case "checkoutPhone": input.value = checkoutInfo.phone || ""; break;
+        case "checkoutAddress": input.value = checkoutInfo.address || ""; break;
+        case "checkoutCity": input.value = checkoutInfo.city || ""; break;
+        case "checkoutProvince": input.value = checkoutInfo.province || ""; break;
+        case "checkoutZip": input.value = checkoutInfo.zip || ""; break;
+        case "checkoutLandmark": input.value = checkoutInfo.landmark || ""; break;
+        case "checkoutCardName": input.value = checkoutInfo.cardName || checkoutInfo.fullName || ""; break;
+        case "checkoutCardNumber": input.value = checkoutInfo.cardNumber || ""; break;
+        case "checkoutCardExpiry": input.value = checkoutInfo.cardExpiry || ""; break;
+        case "checkoutCardCvv": input.value = checkoutInfo.cardCvv || ""; break;
+        case "checkoutGcashNumber": input.value = checkoutInfo.gcashNumber || checkoutInfo.phone || ""; break;
+        default: break;
+      }
+    });
+
+    const selectedPayment = String(checkoutInfo.preferredPaymentMethod || "card").toLowerCase();
+    const selectedBrand = String(checkoutInfo.preferredCardBrand || "visa").toLowerCase();
+
+    checkoutPaymentButtons.forEach((button) => {
+      button.classList.toggle("active", button.dataset.payment === selectedPayment);
+    });
+
+    checkoutPaymentPanels.forEach((panel) => {
+      panel.classList.toggle("active", panel.dataset.paymentPanel === selectedPayment);
+    });
+
+    checkoutBrandButtons.forEach((button) => {
+      const isActive = button.dataset.brand === selectedBrand;
+      button.classList.toggle("active", isActive);
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+
+    updateCardBrandInfo();
+
+    const cardActive = selectedPayment === "card";
+    const gcashActive = selectedPayment === "gcash";
+
+    checkoutFieldIds.forEach((id) => {
+      const input = getField(id);
+      if (!input) return;
+      if (id.startsWith("checkoutCard")) {
+        input.closest("label")?.toggleAttribute("hidden", !cardActive);
+      } else if (id.startsWith("checkoutGcash")) {
+        input.closest("label")?.toggleAttribute("hidden", !gcashActive);
+      }
+    });
+  };
 
   const renderOverview = () => {
     if (statTotalOrders) statTotalOrders.textContent = String(data.orders.length);
@@ -447,12 +563,23 @@ document.addEventListener("DOMContentLoaded", () => {
         recent.forEach((order) => {
           const li = document.createElement("li");
           li.className = "row-item";
-          li.innerHTML = '<div class="row-top"><strong>' + order.id + '</strong><span class="status-pill ' + statusClass(order.status) + '">' + order.status + '</span></div><div class="row-meta">' + order.item + ' ? ' + order.date + '</div>';
+          li.innerHTML = '<div class="row-top"><strong>' + order.id + '</strong><span class="status-pill ' + statusClass(order.status) + '">' + order.status + '</span></div><div class="row-meta">' + order.item + ' · ' + order.date + '</div>';
           recentOrdersList.appendChild(li);
         });
       }
     }
   };
+
+  const checkoutSnapshot = JSON.parse(localStorage.getItem("stapleLastCheckout") || "null");
+  if (checkoutSnapshot && checkoutSnapshot.id && checkoutSnapshot.status === "Processing") {
+    const existingIndex = data.orders.findIndex((order) => order.id === checkoutSnapshot.id);
+    if (existingIndex >= 0) {
+      data.orders[existingIndex] = checkoutSnapshot;
+    } else {
+      data.orders.unshift(checkoutSnapshot);
+    }
+    saveData();
+  }
 
   const renderOrders = () => {
     if (!ordersList) return;
@@ -501,57 +628,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  const renderPayments = () => {
-    if (!paymentsList) return;
-    paymentsList.innerHTML = "";
-
-    if (!data.payments.length) {
-      paymentsList.innerHTML = '<div class="row-item">No saved cards / e-wallets.</div>';
-      return;
-    }
-
-    data.payments.forEach((payment, index) => {
-      const row = document.createElement("div");
-      row.className = "row-item";
-      row.innerHTML =
-        '<div class="row-top"><strong>' + payment.label + '</strong></div>' +
-        '<div class="row-actions">' +
-          '<button type="button" class="subtle-btn remove-payment-btn" data-index="' + index + '">Remove</button>' +
-        '</div>';
-      paymentsList.appendChild(row);
-    });
-  };
-
-  const renderAddresses = () => {
-    if (!addressesList) return;
-    addressesList.innerHTML = "";
-
-    if (!data.addresses.length) {
-      addressesList.innerHTML = '<div class="row-item">No saved shipping or billing addresses.</div>';
-      return;
-    }
-
-    data.addresses.forEach((address, index) => {
-      const row = document.createElement("div");
-      row.className = "row-item";
-      row.innerHTML =
-        '<div class="row-top"><strong>' + address.label + (address.isDefault ? ' (Default)' : '') + '</strong></div>' +
-        '<div class="row-meta">' + address.line + '</div>' +
-        '<div class="row-actions">' +
-          '<button type="button" class="subtle-btn default-address-btn" data-index="' + index + '">Set Default</button>' +
-          '<button type="button" class="subtle-btn edit-address-btn" data-index="' + index + '">Edit</button>' +
-          '<button type="button" class="subtle-btn delete-address-btn" data-index="' + index + '">Delete</button>' +
-        '</div>';
-      addressesList.appendChild(row);
-    });
-  };
-
   const renderAll = () => {
     renderOverview();
     renderOrders();
     renderWishlist();
-    renderPayments();
-    renderAddresses();
+    syncCheckoutInfoForm();
   };
 
   renderAll();
@@ -563,24 +644,40 @@ document.addEventListener("DOMContentLoaded", () => {
       const order = data.orders[idx];
       if (order) {
         const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-        const catalog = {
-          "Regular Fit Shirt": { image: "/Clothes/Regular_S.jfif", price: 269 },
-          "Cropped Box Shirt": { image: "/Clothes/Cropped_S.jfif", price: 269 },
-          "Oversized Shirt": { image: "/Clothes/Oversized_S.jfif", price: 269 },
-          "Regular Fit (Black)": { image: "/Clothes/Regular_S.jfif", price: 269 },
-          "Cropped Box (Black)": { image: "/Clothes/Cropped_S.jfif", price: 269 },
-          "Oversized (Black)": { image: "/Clothes/Oversized_S.jfif", price: 269 }
+        const getFallbackImage = (name) => {
+          const lower = String(name || "").toLowerCase();
+          if (lower.includes("cropped")) return "/Clothes/Cropped_S.jfif";
+          if (lower.includes("oversized")) return "/Clothes/Oversized_S.jfif";
+          if (lower.includes("regular")) return "/Clothes/Regular_S.jfif";
+          return "/Clothes/Regular_S.jfif";
         };
-        const mapped = catalog[order.item] || { image: "/Clothes/Regular_S.jfif", price: 269 };
 
-        const existingIndex = cart.findIndex((item) => String(item.name || "").toLowerCase() === String(order.item || "").toLowerCase());
-        if (existingIndex > -1) {
-          cart[existingIndex].quantity = Number(cart[existingIndex].quantity || 0) + 1;
-        } else {
-          cart.push({ name: order.item, price: mapped.price, quantity: 1, image: mapped.image });
-        }
+        const sourceItems = Array.isArray(order.items) && order.items.length
+          ? order.items
+          : [{
+              name: order.item,
+              price: 269,
+              quantity: 1,
+              image: getFallbackImage(order.item),
+            }];
+
+        sourceItems.forEach((sourceItem) => {
+          const normalizedName = String(sourceItem.name || "").toLowerCase();
+          const existingIndex = cart.findIndex((item) => String(item.name || "").toLowerCase() === normalizedName);
+          if (existingIndex > -1) {
+            cart[existingIndex].quantity = (Number(cart[existingIndex].quantity) || 0) + (Number(sourceItem.quantity) || 1);
+          } else {
+            cart.push({
+              name: sourceItem.name || order.item,
+              price: Number(sourceItem.price || order.totalPrice || 269),
+              quantity: Number(sourceItem.quantity || 1),
+              image: sourceItem.image || getFallbackImage(sourceItem.name || order.item),
+            });
+          }
+        });
+
         localStorage.setItem("cart", JSON.stringify(cart));
-        alert("Item added to cart.");
+        navigateWithOverlay("../Clothes_Sites/Cart/cart.html");
       }
     }
 
@@ -615,139 +712,76 @@ document.addEventListener("DOMContentLoaded", () => {
       renderAll();
     }
 
-    const removePaymentBtn = e.target.closest(".remove-payment-btn");
-    if (removePaymentBtn) {
-      const idx = Number(removePaymentBtn.dataset.index);
-      data.payments.splice(idx, 1);
-      saveData();
-      renderAll();
-    }
-
-    const defaultAddressBtn = e.target.closest(".default-address-btn");
-    if (defaultAddressBtn) {
-      const idx = Number(defaultAddressBtn.dataset.index);
-      data.addresses.forEach((a, i) => {
-        a.isDefault = i === idx;
-      });
-      saveData();
-      renderAll();
-    }
-
-    const editAddressBtn = e.target.closest(".edit-address-btn");
-    if (editAddressBtn) {
-      const idx = Number(editAddressBtn.dataset.index);
-      const current = data.addresses[idx];
-      if (!current) return;
-      createInputModal("Edit Address", [
-        { name: "label", label: "Address Label", placeholder: "Address Label", value: current.label },
-        { name: "line", label: "Address Line", placeholder: "Street, City", value: current.line }
-      ], (values) => {
-        if (!values.label || !values.line) return;
-        current.label = values.label;
-        current.line = values.line;
-        saveData();
-        renderAll();
-      });
-    }
-
-    const deleteAddressBtn = e.target.closest(".delete-address-btn");
-    if (deleteAddressBtn) {
-      const idx = Number(deleteAddressBtn.dataset.index);
-      data.addresses.splice(idx, 1);
-      if (!data.addresses.some((a) => a.isDefault) && data.addresses[0]) {
-        data.addresses[0].isDefault = true;
-      }
-      saveData();
-      renderAll();
-    }
   });
-  const addPaymentBtn = document.getElementById("addPaymentBtn");
-  const createInputModal = (title, fields, onSubmit) => {
-    const modal = document.createElement("div");
-    modal.className = "input-modal-overlay";
-    modal.innerHTML = `
-      <div class="input-modal-box">
-        <div class="input-modal-header"><h3>${title}</h3></div>
-        <form class="input-modal-form">
-          ${fields.map((f) => `
-            <div class="input-modal-field">
-              <label>${f.label}</label>
-              <input type="text" placeholder="${f.placeholder}" class="modal-input" data-field="${f.name}" value="${f.value || ""}" />
-            </div>
-          `).join("")}
-          <div class="input-modal-buttons">
-            <button type="button" class="modal-cancel-btn">Cancel</button>
-            <button type="submit" class="modal-submit-btn">Submit</button>
-          </div>
-        </form>
-      </div>
-    `;
-    
-    const overlay = modal;
-    const form = modal.querySelector(".input-modal-form");
-    const cancelBtn = modal.querySelector(".modal-cancel-btn");
-    
-    const closeModal = () => {
-      overlay.classList.remove("is-open");
-      window.setTimeout(() => {
-        overlay.remove();
-      }, 220);
-    };
-    
-    cancelBtn.addEventListener("click", closeModal);
-    overlay.addEventListener("click", (e) => {
-      if (e.target === overlay) closeModal();
-    });
-    
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const values = {};
-      fields.forEach((f) => {
-        const input = form.querySelector(`[data-field="${f.name}"]`);
-        values[f.name] = input ? input.value.trim() : "";
-      });
-      closeModal();
-      onSubmit(values);
-    });
-    
-    document.body.appendChild(overlay);
-    window.requestAnimationFrame(() => {
-      overlay.classList.add("is-open");
-    });
-  };
+  if (checkoutInfoForm) {
+    checkoutInfoForm.addEventListener("submit", (event) => {
+      event.preventDefault();
 
-  if (addPaymentBtn) {
-    addPaymentBtn.addEventListener("click", () => {
-      createInputModal("Add Payment Method", [
-        { name: "method", label: "Card / E-wallet Label", placeholder: "Visa ending 1111", value: "" }
-      ], (values) => {
-        if (!values.method) return;
-        data.payments.unshift({ id: "P-" + Date.now(), label: values.method, type: "custom" });
-        saveData();
-        renderAll();
-      });
+      const read = (id) => (getField(id)?.value || "").trim();
+
+      data.checkoutInfo = {
+        ...checkoutInfo,
+        fullName: read("checkoutFullName"),
+        email: read("checkoutEmail"),
+        phone: read("checkoutPhone"),
+        address: read("checkoutAddress"),
+        city: read("checkoutCity"),
+        province: read("checkoutProvince"),
+        zip: read("checkoutZip"),
+        landmark: read("checkoutLandmark"),
+        preferredPaymentMethod: String(checkoutInfo.preferredPaymentMethod || "card").toLowerCase(),
+        preferredCardBrand: String(checkoutInfo.preferredCardBrand || "visa").toLowerCase(),
+        cardName: read("checkoutCardName"),
+        cardNumber: read("checkoutCardNumber"),
+        cardExpiry: read("checkoutCardExpiry"),
+        cardCvv: read("checkoutCardCvv"),
+        gcashNumber: read("checkoutGcashNumber"),
+      };
+
+      checkoutInfo.fullName = data.checkoutInfo.fullName;
+      checkoutInfo.email = data.checkoutInfo.email;
+      checkoutInfo.phone = data.checkoutInfo.phone;
+      checkoutInfo.address = data.checkoutInfo.address;
+      checkoutInfo.city = data.checkoutInfo.city;
+      checkoutInfo.province = data.checkoutInfo.province;
+      checkoutInfo.zip = data.checkoutInfo.zip;
+      checkoutInfo.landmark = data.checkoutInfo.landmark;
+      checkoutInfo.preferredPaymentMethod = data.checkoutInfo.preferredPaymentMethod;
+      checkoutInfo.preferredCardBrand = data.checkoutInfo.preferredCardBrand;
+      checkoutInfo.cardName = data.checkoutInfo.cardName;
+      checkoutInfo.cardNumber = data.checkoutInfo.cardNumber;
+      checkoutInfo.cardExpiry = data.checkoutInfo.cardExpiry;
+      checkoutInfo.cardCvv = data.checkoutInfo.cardCvv;
+      checkoutInfo.gcashNumber = data.checkoutInfo.gcashNumber;
+
+      data.settings.phone = data.checkoutInfo.phone || data.settings.phone || "";
+      currentUser.phone = data.checkoutInfo.phone || currentUser.phone || "";
+      localStorage.setItem("stapleCurrentUser", JSON.stringify(currentUser));
+      saveData();
+      if (checkoutInfoMessage) {
+        checkoutInfoMessage.textContent = "Checkout information saved.";
+        checkoutInfoMessage.style.color = "#137333";
+      }
+      syncCheckoutInfoForm();
     });
   }
 
-  const addAddressBtn = document.getElementById("addAddressBtn");
-  if (addAddressBtn) {
-    addAddressBtn.addEventListener("click", () => {
-      createInputModal("Add Address", [
-        { name: "label", label: "Address Label", placeholder: "New Address", value: "" },
-        { name: "line", label: "Address Line", placeholder: "Street, City", value: "" }
-      ], (values) => {
-        if (!values.label || !values.line) return;
-        data.addresses.push({
-          id: "A-" + Date.now(),
-          label: values.label,
-          line: values.line,
-          isDefault: data.addresses.length === 0
-        });
-        saveData();
-        renderAll();
-      });
+  checkoutPaymentButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      checkoutInfo.preferredPaymentMethod = String(button.dataset.payment || "card").toLowerCase();
+      saveData();
+      syncCheckoutInfoForm();
     });
-  }
+  });
+
+  checkoutBrandButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      checkoutInfo.preferredPaymentMethod = "card";
+      checkoutInfo.preferredCardBrand = String(button.dataset.brand || "visa").toLowerCase();
+      saveData();
+      syncCheckoutInfoForm();
+    });
+  });
 
   const secureCheckoutToggle = document.getElementById("secureCheckoutToggle");
   if (secureCheckoutToggle) {

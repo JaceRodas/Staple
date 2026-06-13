@@ -327,6 +327,13 @@ body::-webkit-scrollbar {
   transition: background-color 160ms ease, box-shadow 160ms ease;
 }
 
+.gallery-item > .image-link {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+}
+
 .gallery-item:hover {
   background: #eee;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
@@ -354,13 +361,9 @@ body::-webkit-scrollbar {
   pointer-events: none;
 }
 
-.gallery-item:hover img.m {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(0.98);
-}
-
-.gallery-item:hover img.s {
-  opacity: 0.12;
+.gallery-item img.s,
+.gallery-item img.m {
+  z-index: 1;
 }
 
 /* Prevent drag/select on visuals */

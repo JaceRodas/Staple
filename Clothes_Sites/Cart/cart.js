@@ -406,21 +406,32 @@ const shopByLink = document.getElementById("shopmodal");
     });
   });
 
-  // cart icon -> go to cart page
+  // cart icon stays inert on the cart page
   const cartButton = document.getElementById("cartButton");
-  if (cartButton) {
-    cartButton.addEventListener("click", () => {
-      navigateWithOverlay("cart.html");
-    });
-  }
 
   // --------- Cart rendering logic ---------
   const cartItemsContainer = document.getElementById("cartItems");
   const totalItemsSpan = document.getElementById("totalItems");
   const totalPriceSpan = document.getElementById("totalPrice");
   const cartBadge = document.querySelector(".cart-badge");
+  const checkoutButton = document.getElementById("checkoutButton");
+  const checkoutOverlay = document.getElementById("checkoutOverlay");
+  const checkoutCloseButton = document.getElementById("checkoutCloseButton");
+  const checkoutForm = document.getElementById("checkoutForm");
+  const checkoutStatus = document.getElementById("checkoutStatus");
+  const checkoutItemList = document.getElementById("checkoutItemList");
+  const checkoutTotal = document.getElementById("checkoutTotal");
+  const checkoutResult = document.getElementById("checkoutResult");
+  const checkoutResultMessage = document.getElementById("checkoutResultMessage");
+  const checkoutDoneButton = document.getElementById("checkoutDoneButton");
+  const paymentMethodButtons = Array.from(document.querySelectorAll(".payment-method-btn"));
+  const paymentPanels = Array.from(document.querySelectorAll(".payment-panel[data-payment-panel]"));
+  const cardBrandButtons = Array.from(document.querySelectorAll(".card-brand-btn"));
+  const checkoutLoading = document.getElementById("checkoutLoading");
 
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let selectedPaymentMethod = "";
+  let selectedCardBrand = "visa";
 
   if (!cartItemsContainer) {
     // no cart UI on this page (defensive)
@@ -476,7 +487,311 @@ const shopByLink = document.getElementById("shopmodal");
 
     totalItemsSpan.textContent = String(totalItems);
     totalPriceSpan.textContent = totalPrice.toFixed(2);
+
+    if (checkoutButton) {
+      checkoutButton.disabled = cart.length === 0;
+    }
+
+    if (checkoutTotal) {
+      checkoutTotal.textContent = totalPrice.toFixed(2);
+    }
+
+    if (checkoutOverlay && checkoutOverlay.classList.contains("active")) {
+      populateCheckoutSummary();
+    }
   };
+
+  const populateCheckoutSummary = () => {
+    if (!checkoutItemList) return;
+
+    checkoutItemList.innerHTML = "";
+
+    if (cart.length === 0) {
+      checkoutItemList.innerHTML = '<p class="empty-cart-message">Your cart is empty.</p>';
+      if (checkoutTotal) checkoutTotal.textContent = "0.00";
+      return;
+    }
+
+    let totalPrice = 0;
+
+    cart.forEach((item) => {
+      const unitPrice = Number(item.price || 0);
+      const quantity = Number(item.quantity || 0);
+      const lineTotal = unitPrice * quantity;
+      totalPrice += lineTotal;
+
+      const row = document.createElement("div");
+      row.className = "checkout-item-row";
+      row.innerHTML = `<span>${item.name || item.id || "Shirt"} x${quantity}</span><span>&#8369;${lineTotal.toFixed(2)}</span>`;
+      checkoutItemList.appendChild(row);
+    });
+
+    if (checkoutTotal) checkoutTotal.textContent = totalPrice.toFixed(2);
+  };
+
+  const setCheckoutMessage = (message, isError = false) => {
+    if (!checkoutStatus) return;
+    checkoutStatus.textContent = message;
+    checkoutStatus.style.color = isError ? "#b3261e" : "#6d4e2e";
+  };
+
+  const syncPaymentPanels = () => {
+    paymentMethodButtons.forEach((button) => {
+      button.classList.toggle("active", button.dataset.payment === selectedPaymentMethod);
+    });
+
+    paymentPanels.forEach((panel) => {
+      panel.classList.toggle("active", panel.dataset.paymentPanel === selectedPaymentMethod);
+    });
+
+    if (checkoutForm) {
+      const cardFields = Array.from(checkoutForm.querySelectorAll('[data-payment-field="card"]'));
+      const gcashFields = Array.from(checkoutForm.querySelectorAll('[data-payment-field="gcash"]'));
+      cardFields.forEach((field) => {
+        field.hidden = selectedPaymentMethod !== "card";
+      });
+      gcashFields.forEach((field) => {
+        field.hidden = selectedPaymentMethod !== "gcash";
+      });
+    }
+
+    cardBrandButtons.forEach((button) => {
+      button.classList.toggle("active", button.dataset.brand === selectedCardBrand);
+    });
+  };
+
+  const resetCheckoutState = () => {
+    if (checkoutForm) checkoutForm.hidden = false;
+    if (checkoutResult) checkoutResult.hidden = true;
+    if (checkoutLoading) checkoutLoading.hidden = true;
+    setCheckoutMessage("");
+    selectedPaymentMethod = "";
+    selectedCardBrand = "visa";
+    syncPaymentPanels();
+    checkoutForm?.reset();
+  };
+
+  const openCheckout = () => {
+    if (!checkoutOverlay || !checkoutForm) return;
+
+    if (cart.length === 0) {
+      setCheckoutMessage("Your cart is empty. Add an item before checkout.", true);
+      return;
+    }
+
+    resetCheckoutState();
+    populateCheckoutSummary();
+    loadCheckoutDefaults();
+    checkoutOverlay.classList.add("active");
+    checkoutOverlay.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    if (checkoutLoading) checkoutLoading.hidden = true;
+    if (checkoutForm) checkoutForm.hidden = false;
+    if (checkoutResult) checkoutResult.hidden = true;
+    setCheckoutMessage("Choose a payment method and complete the delivery fields.");
+  };
+
+  const closeCheckout = () => {
+    if (!checkoutOverlay) return;
+    checkoutOverlay.classList.remove("active");
+    checkoutOverlay.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    resetCheckoutState();
+  };
+
+  const readValue = (id) => (document.getElementById(id)?.value || "").trim();
+
+  const requireField = (id, label) => {
+    const value = readValue(id);
+    if (!value) {
+      throw new Error(`Please enter your ${label}.`);
+    }
+    return value;
+  };
+
+  const generateOrderNumber = () => {
+    const randomPart = Math.floor(100000 + Math.random() * 900000);
+    return `ST-${randomPart}`;
+  };
+
+  const loadCheckoutDefaults = () => {
+    const currentUser = JSON.parse(localStorage.getItem("stapleCurrentUser") || "null") || {};
+    const dashboardKey = currentUser.email ? "stapleDashboardData_" + String(currentUser.email).toLowerCase() : "";
+    let dashboardData = null;
+
+    if (dashboardKey) {
+      try {
+        dashboardData = JSON.parse(localStorage.getItem(dashboardKey) || "null");
+      } catch {
+        dashboardData = null;
+      }
+    }
+
+    const checkoutInfo = dashboardData?.checkoutInfo && typeof dashboardData.checkoutInfo === "object"
+      ? dashboardData.checkoutInfo
+      : {};
+
+    const setIfEmpty = (id, value) => {
+      const input = document.getElementById(id);
+      if (input && value && !input.value) {
+        input.value = value;
+      }
+    };
+
+    setIfEmpty("checkoutFullName", checkoutInfo.fullName || currentUser.username || currentUser.fullName || "");
+    setIfEmpty("checkoutEmail", checkoutInfo.email || currentUser.email || "");
+    setIfEmpty("checkoutPhone", checkoutInfo.phone || dashboardData?.settings?.phone || currentUser.phone || "");
+    setIfEmpty("checkoutAddress", checkoutInfo.address || "");
+    setIfEmpty("checkoutCity", checkoutInfo.city || "");
+    setIfEmpty("checkoutProvince", checkoutInfo.province || "");
+    setIfEmpty("checkoutZip", checkoutInfo.zip || "");
+    setIfEmpty("checkoutLandmark", checkoutInfo.landmark || "");
+
+    if (checkoutInfo.preferredPaymentMethod && !selectedPaymentMethod) {
+      selectedPaymentMethod = String(checkoutInfo.preferredPaymentMethod).toLowerCase();
+      syncPaymentPanels();
+    }
+
+    setIfEmpty("checkoutCardName", checkoutInfo.cardName || checkoutInfo.fullName || "");
+    setIfEmpty("checkoutCardNumber", checkoutInfo.cardNumber || "");
+    setIfEmpty("checkoutCardExpiry", checkoutInfo.cardExpiry || "");
+    setIfEmpty("checkoutCardCvv", checkoutInfo.cardCvv || "");
+    setIfEmpty("checkoutGcashNumber", checkoutInfo.gcashNumber || checkoutInfo.phone || "");
+  };
+
+  if (checkoutButton) {
+    checkoutButton.addEventListener("click", openCheckout);
+  }
+
+  if (checkoutCloseButton) {
+    checkoutCloseButton.addEventListener("click", closeCheckout);
+  }
+
+  if (checkoutOverlay) {
+    checkoutOverlay.addEventListener("click", (event) => {
+      if (event.target === checkoutOverlay) {
+        closeCheckout();
+      }
+    });
+  }
+
+  paymentMethodButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedPaymentMethod = button.dataset.payment || "card";
+      syncPaymentPanels();
+      setCheckoutMessage("");
+    });
+  });
+
+  cardBrandButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedCardBrand = button.dataset.brand || "visa";
+      syncPaymentPanels();
+    });
+  });
+
+  if (checkoutDoneButton) {
+    checkoutDoneButton.addEventListener("click", closeCheckout);
+  }
+
+  if (checkoutForm) {
+    checkoutForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (cart.length === 0) {
+        setCheckoutMessage("Your cart is empty. Add items before checking out.", true);
+        return;
+      }
+
+      try {
+        if (!selectedPaymentMethod) {
+          throw new Error("Please choose a payment method.");
+        }
+
+        const fullName = requireField("checkoutFullName", "full name");
+        const email = requireField("checkoutEmail", "email");
+        const phone = requireField("checkoutPhone", "phone number");
+        const address = requireField("checkoutAddress", "location or address");
+        const city = requireField("checkoutCity", "city or municipality");
+        const province = requireField("checkoutProvince", "province");
+        const zip = requireField("checkoutZip", "zip code");
+
+        if (selectedPaymentMethod === "card") {
+          requireField("checkoutCardName", "name on card");
+          requireField("checkoutCardNumber", "card number");
+          requireField("checkoutCardExpiry", "card expiry");
+          requireField("checkoutCardCvv", "CVV");
+        } else if (selectedPaymentMethod === "gcash") {
+          requireField("checkoutGcashNumber", "GCash mobile number");
+        }
+
+        const orderNumber = generateOrderNumber();
+        const totalPrice = cart.reduce((sum, item) => {
+          return sum + (Number(item.price || 0) * (Number(item.quantity) || 0));
+        }, 0);
+
+        const methodLabel = selectedPaymentMethod === "card"
+          ? `Card (${selectedCardBrand === "mastercard" ? "Mastercard" : "Visa"})`
+          : selectedPaymentMethod === "gcash"
+            ? "GCash"
+            : "Cash on Delivery";
+
+        const orderRecord = {
+          id: orderNumber,
+          item: cart.map((item) => `${item.name || item.id || "Shirt"} x${item.quantity || 0}`).join(", "),
+          status: "Processing",
+          tracking: "Order received. Preparing for courier handoff.",
+          date: new Date().toISOString().slice(0, 10),
+          paymentMethod: methodLabel,
+          totalPrice,
+          items: cart.map((item) => ({
+            name: item.name || item.id || "Shirt",
+            price: Number(item.price || 0),
+            quantity: Number(item.quantity || 0),
+            image: item.image || "",
+          })),
+          customer: { fullName, email, phone, address, city, province, zip },
+        };
+
+        const dashboardStorageKey = "stapleDashboardData_" + email;
+        let dashboardData;
+        try {
+          dashboardData = JSON.parse(localStorage.getItem(dashboardStorageKey) || "null");
+        } catch {
+          dashboardData = null;
+        }
+        if (!dashboardData || typeof dashboardData !== "object") {
+          dashboardData = { orders: [], wishlist: [], payments: [], addresses: [], settings: {} };
+        }
+        if (!Array.isArray(dashboardData.orders)) dashboardData.orders = [];
+        dashboardData.orders.unshift(orderRecord);
+        localStorage.setItem(dashboardStorageKey, JSON.stringify(dashboardData));
+
+        const lastCheckoutKey = "stapleLastCheckout";
+        localStorage.setItem(lastCheckoutKey, JSON.stringify(orderRecord));
+
+        if (checkoutForm) checkoutForm.hidden = true;
+        if (checkoutLoading) checkoutLoading.hidden = false;
+        if (checkoutResult) checkoutResult.hidden = true;
+        setCheckoutMessage("Processing your order...");
+
+        window.setTimeout(() => {
+          cart = [];
+          localStorage.setItem("cart", JSON.stringify(cart));
+          renderCart();
+
+          if (checkoutLoading) checkoutLoading.hidden = true;
+          if (checkoutResult) checkoutResult.hidden = false;
+          if (checkoutResultMessage) {
+            checkoutResultMessage.textContent = `Order ${orderNumber} is now processing. Payment method: ${methodLabel}. Shipping to ${address}, ${city}, ${province} ${zip}. Estimated delivery: 3-7 days.`;
+          }
+          setCheckoutMessage("Order complete.", false);
+        }, 5000);
+      } catch (error) {
+        setCheckoutMessage(error.message || "Please complete all required fields.", true);
+      }
+    });
+  }
 
   cartItemsContainer.addEventListener("click", (e) => {
     const incBtn = e.target.closest(".increase-qty");

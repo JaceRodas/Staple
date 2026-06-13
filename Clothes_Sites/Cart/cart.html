@@ -74,6 +74,153 @@
         </section>
     </main>
 
+  <div id="checkoutOverlay" class="checkout-overlay" aria-hidden="true">
+    <div class="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+      <button type="button" id="checkoutCloseButton" class="checkout-close" aria-label="Close checkout">&times;</button>
+      <div class="checkout-header">
+        <p class="checkout-kicker">Checkout simulation</p>
+        <h2 id="checkoutTitle">Confirm your order</h2>
+        <p class="checkout-note">Choose a payment method, enter delivery details, and preview a simple purchase flow.</p>
+      </div>
+
+      <div class="checkout-grid">
+        <aside class="checkout-summary-panel">
+          <h3>Order Summary</h3>
+          <div id="checkoutItemList" class="checkout-item-list"></div>
+          <div class="checkout-total-row">
+            <span>Total</span>
+            <strong><span class="peso-sign">&#8369;</span><span id="checkoutTotal">0.00</span></strong>
+          </div>
+        </aside>
+
+        <section class="checkout-form-panel">
+          <div class="payment-methods" role="tablist" aria-label="Payment method">
+            <button type="button" class="payment-method-btn active" data-payment="card">
+              <span class="payment-method-label">Card</span>
+              <span class="payment-method-icons">
+                <img src="/Assets/visa.avif" alt="Visa" class="payment-logo">
+                <img src="/Assets/Mastercard-logo.svg.png" alt="Mastercard" class="payment-logo">
+              </span>
+            </button>
+            <button type="button" class="payment-method-btn" data-payment="gcash">
+              <span class="payment-method-label">GCash</span>
+              <img src="/Assets/gcash.png" alt="GCash" class="payment-method-logo">
+            </button>
+            <button type="button" class="payment-method-btn" data-payment="cod">
+              <span class="payment-method-label">Cash on Delivery</span>
+              <span class="payment-method-text">Pay when your order arrives</span>
+            </button>
+          </div>
+
+          <form id="checkoutForm" class="checkout-form" novalidate>
+            <div class="checkout-fields">
+              <label for="checkoutFullName">Full name</label>
+              <input id="checkoutFullName" type="text" class="checkout-input" placeholder="Juan Dela Cruz" required>
+
+              <label for="checkoutEmail">Email</label>
+              <input id="checkoutEmail" type="email" class="checkout-input" placeholder="juan@email.com" required>
+
+              <label for="checkoutPhone">Phone number</label>
+              <input id="checkoutPhone" type="tel" class="checkout-input" placeholder="09xxxxxxxxx" required>
+
+              <label for="checkoutAddress">Location / address</label>
+              <input id="checkoutAddress" type="text" class="checkout-input" placeholder="Street, barangay, house number" required>
+
+              <div class="checkout-row">
+                <div>
+                  <label for="checkoutCity">City / municipality</label>
+                  <input id="checkoutCity" type="text" class="checkout-input" placeholder="Cebu City" required>
+                </div>
+                <div>
+                  <label for="checkoutProvince">Province</label>
+                  <input id="checkoutProvince" type="text" class="checkout-input" placeholder="Cebu" required>
+                </div>
+              </div>
+
+              <div class="checkout-row">
+                <div>
+                  <label for="checkoutZip">Zip code</label>
+                  <input id="checkoutZip" type="text" class="checkout-input" placeholder="6000" required>
+                </div>
+                <div>
+                  <label for="checkoutLandmark">Landmark / notes</label>
+                  <input id="checkoutLandmark" type="text" class="checkout-input" placeholder="Near school, gate color, etc.">
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-panel" data-payment-panel="card">
+              <h4>Card details</h4>
+              <div class="card-brand-options">
+                <button type="button" class="card-brand-btn active" data-brand="visa">
+                  <img src="/Assets/visa.avif" alt="Visa">
+                </button>
+                <button type="button" class="card-brand-btn" data-brand="mastercard">
+                  <img src="/Assets/Mastercard-logo.svg.png" alt="Mastercard">
+                </button>
+              </div>
+              <div class="checkout-fields compact">
+                <div data-payment-field="card">
+                  <label for="checkoutCardName">Name on card</label>
+                  <input id="checkoutCardName" type="text" class="checkout-input" placeholder="Juan Dela Cruz">
+                </div>
+
+                <div data-payment-field="card">
+                  <label for="checkoutCardNumber">Card number</label>
+                  <input id="checkoutCardNumber" type="text" class="checkout-input" placeholder="1234 5678 9012 3456" inputmode="numeric">
+                </div>
+
+                <div class="checkout-row" data-payment-field="card">
+                  <div>
+                    <label for="checkoutCardExpiry">Expiry</label>
+                    <input id="checkoutCardExpiry" type="text" class="checkout-input" placeholder="MM/YY">
+                  </div>
+                  <div>
+                    <label for="checkoutCardCvv">CVV</label>
+                    <input id="checkoutCardCvv" type="text" class="checkout-input" placeholder="123" inputmode="numeric">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-panel" data-payment-panel="gcash">
+              <h4>GCash details</h4>
+              <div class="gcash-badge">
+                <img src="/Assets/gcash.png" alt="GCash">
+                <span>Send payment using your GCash account</span>
+              </div>
+              <div class="checkout-fields compact">
+                <div data-payment-field="gcash">
+                  <label for="checkoutGcashNumber">GCash mobile number</label>
+                  <input id="checkoutGcashNumber" type="tel" class="checkout-input" placeholder="09xxxxxxxxx">
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-panel" data-payment-panel="cod">
+              <h4>Cash on delivery</h4>
+              <p class="checkout-panel-note">No online payment details needed. We will collect payment when the parcel arrives.</p>
+            </div>
+
+            <div id="checkoutLoading" class="checkout-loading" hidden>
+              <div class="checkout-spinner" aria-hidden="true"></div>
+              <p>Processing your order...</p>
+            </div>
+
+            <button type="submit" class="place-order-button">Place order</button>
+            <p id="checkoutStatus" class="checkout-status"></p>
+          </form>
+
+          <div id="checkoutResult" class="checkout-result" hidden>
+            <h4>Order confirmed</h4>
+            <p id="checkoutResultMessage"></p>
+            <button type="button" id="checkoutDoneButton" class="checkout-done-button">Done</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
           <div id="modalContainer" class="modal-container">
   <div class="modal">
     <a href="/Clothes_Sites/Cropped Box/CboxShirt.html" target="_blank">

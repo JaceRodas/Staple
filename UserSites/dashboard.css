@@ -314,27 +314,80 @@ body.site-dark .modal-cancel-btn:hover {
 
 .modal-container {
   position: fixed;
-  top: 90px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  display: none;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 80px;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.28);
-  border-radius: 10px;
   z-index: 1000;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
 }
 
 .modal-container.show {
-  display: flex;
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-container .modal {
+  flex: 0 0 auto;
+}
+
+.modal {
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transform: scale(1);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, opacity 0.35s ease;
+}
+
+.modal-container.show .modal {
+  opacity: 1;
+}
+
+.modal-container.show .modal:hover {
+  transform: scale(1.15);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+  z-index: 1100;
 }
 
 .modal img {
-  width: 160px;
-  height: 200px;
+  width: 200px;
+  height: auto;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.modal:hover img {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .modal-container {
+    gap: 8px;
+    padding: 16px;
+    max-width: none;
+    width: auto;
+    overflow-x: visible;
+    overflow-y: visible;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    top: 50%;
+  }
+
+  .modal img {
+    width: 100%;
+    height: auto;
+  }
 }
 
 .dashboard-main {
@@ -364,6 +417,12 @@ body.site-dark .modal-cancel-btn:hover {
 .section-title-row h2 {
   margin: 0;
   font-size: 25px;
+}
+
+.section-subtitle {
+  margin: 6px 0 0;
+  color: #5f5f5f;
+  font-size: 14px;
 }
 
 .overview-grid {
@@ -543,6 +602,218 @@ body.site-dark .modal-cancel-btn:hover {
   font-size: 15px;
 }
 
+.checkout-info-form {
+  display: grid;
+  gap: 16px;
+}
+
+.checkout-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.checkout-info-grid label {
+  display: grid;
+  gap: 6px;
+  font-size: 15px;
+}
+
+.checkout-info-grid input,
+.checkout-select {
+  border: 1px solid #d4d4d4;
+  border-radius: 8px;
+  padding: 9px 10px;
+  font-size: 15px;
+  font-family: inherit;
+  background: #ffffff;
+  color: #111111;
+}
+
+.checkout-payment-block {
+  display: grid;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.checkout-payment-label {
+  font-weight: 700;
+}
+
+.checkout-payment-methods {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.checkout-method-btn {
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.88);
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  overflow: hidden;
+}
+
+.checkout-method-btn {
+  min-height: 88px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.checkout-method-btn.active,
+.checkout-method-btn:hover {
+  border-color: rgba(17, 17, 17, 0.28);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.checkout-method-label {
+  font-weight: 800;
+  color: #16110d;
+}
+
+.payment-method-icons,
+.card-brand-options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+.payment-logo,
+.payment-method-logo,
+.card-brand-logo,
+.gcash-badge img {
+  display: block;
+  object-fit: contain;
+}
+
+.payment-logo {
+  width: 42px;
+  height: 24px;
+}
+
+.payment-method-logo {
+  width: 72px;
+  height: 24px;
+  margin-inline: auto;
+}
+
+.payment-method-icons img,
+.payment-method-logo,
+.card-brand-logo {
+  max-width: 100%;
+}
+
+.payment-method-text {
+  font-size: 12px;
+  color: #5f5147;
+}
+
+.checkout-payment-panels {
+  display: grid;
+  gap: 12px;
+}
+
+.checkout-payment-panel {
+  border: 1px solid #ededed;
+  border-radius: 12px;
+  padding: 14px;
+  background: #fcfcfc;
+  display: none;
+}
+
+.checkout-payment-panel.active {
+  display: block;
+}
+
+.checkout-payment-panel h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.card-brand-options {
+  justify-content: flex-start;
+  margin: 0 0 12px;
+}
+
+.card-brand-btn {
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.88);
+  min-height: 56px;
+  padding: 10px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.card-brand-btn.active,
+.card-brand-btn:hover {
+  border-color: rgba(17, 17, 17, 0.28);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.card-brand-logo {
+  width: 66px;
+  height: 22px;
+}
+
+.card-brand-info {
+  margin: 0 0 12px;
+  color: #5f5147;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.checkout-panel-note {
+  margin: 0;
+  color: #5f5f5f;
+}
+
+.compact-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.gcash-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(17, 17, 17, 0.04);
+  margin-bottom: 12px;
+}
+
+.gcash-badge img {
+  width: 74px;
+  height: 28px;
+}
+
+.checkout-panel-note {
+  margin: 0;
+  color: #5f5f5f;
+  line-height: 1.45;
+}
+
+.checkout-save-btn {
+  justify-self: start;
+}
+
 .status-message {
   display: block;
   min-height: 16px;
@@ -665,10 +936,36 @@ body.site-dark .toggle-line {
 }
 
 body.site-dark .settings-form input,
-body.site-dark .search-input {
+body.site-dark .search-input,
+body.site-dark .checkout-info-grid input,
+body.site-dark .checkout-select {
   background: #232323;
   border-color: #3a3a3a;
   color: #f2f2f2;
+}
+
+body.site-dark .section-subtitle,
+body.site-dark .checkout-panel-note {
+  color: #c9c9c9;
+}
+
+body.site-dark .checkout-method-btn,
+body.site-dark .card-brand-btn {
+  background: #242424;
+  border-color: #3d3d3d;
+  color: #f2f2f2;
+}
+
+body.site-dark .payment-method-text,
+body.site-dark .gcash-badge {
+  color: #d4d4d4;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+body.site-dark .checkout-payment-panel {
+  background: #1d1d1d;
+  border-color: #333;
+  color: #ededed;
 }
 
 body.site-dark .subtle-btn {
@@ -703,6 +1000,22 @@ body.site-dark .subtle-btn {
   .input-modal-buttons {
     flex-direction: column;
   }
+
+  .checkout-info-grid,
+  .checkout-payment-methods,
+  .compact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-container {
+    flex-direction: row;
+    gap: 8px;
+    padding: 16px;
+  }
+
+  .modal img {
+    width: 100%;
+  }
 }
 
 
@@ -731,12 +1044,12 @@ body.site-dark .navbar:not(.at-top) {
 }
 
 body.site-dark .navbar a {
-  color: #0e0e0e;
+  color: #ffffff;
 }
 
 body.site-dark .site-footer {
-  background: rgba(255, 255, 255, 0.2);
-  color: #111;
+  background: rgba(255, 255, 255, 0.12);
+  color: #f0f0f0;
 }
 
 

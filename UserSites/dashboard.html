@@ -131,19 +131,112 @@
 
     <section class="section-card">
       <div class="section-title-row">
-        <h2>Payment Methods</h2>
-        <button type="button" id="addPaymentBtn" class="subtle-btn">Add Payment Method</button>
+        <div>
+          <h2>Checkout Information</h2>
+          <p class="section-subtitle">These details are shared with cart checkout and stay editable here.</p>
+        </div>
       </div>
-      <div id="paymentsList" class="rows"></div>
-      <label class="toggle-line"><input type="checkbox" id="secureCheckoutToggle"> Enable secure checkout settings</label>
-    </section>
 
-    <section class="section-card">
-      <div class="section-title-row">
-        <h2>Addresses</h2>
-        <button type="button" id="addAddressBtn" class="subtle-btn">Add Address</button>
-      </div>
-      <div id="addressesList" class="rows"></div>
+      <form id="checkoutInfoForm" class="checkout-info-form">
+        <div class="checkout-info-grid">
+          <label>Full name
+            <input type="text" id="checkoutFullName" placeholder="Juan Dela Cruz">
+          </label>
+          <label>Email
+            <input type="email" id="checkoutEmail" placeholder="juan@email.com">
+          </label>
+          <label>Phone number
+            <input type="tel" id="checkoutPhone" placeholder="09xxxxxxxxx">
+          </label>
+          <label>Location / address
+            <input type="text" id="checkoutAddress" placeholder="Street, barangay, house number">
+          </label>
+          <label>City / municipality
+            <input type="text" id="checkoutCity" placeholder="Cebu City">
+          </label>
+          <label>Province
+            <input type="text" id="checkoutProvince" placeholder="Cebu">
+          </label>
+          <label>Zip code
+            <input type="text" id="checkoutZip" placeholder="6000">
+          </label>
+          <label>Landmark / notes
+            <input type="text" id="checkoutLandmark" placeholder="Near school, gate color, etc.">
+          </label>
+        </div>
+
+        <div class="checkout-payment-block">
+          <span class="checkout-payment-label">Preferred payment method</span>
+          <div class="checkout-payment-methods" role="tablist" aria-label="Preferred payment method">
+            <button type="button" class="checkout-method-btn active" data-payment="card">
+              <span class="checkout-method-label">Card</span>
+              <span class="payment-method-icons">
+                <img src="../Assets/visa.avif" alt="Visa" class="payment-logo">
+                <img src="../Assets/Mastercard-logo.svg.png" alt="Mastercard" class="payment-logo">
+              </span>
+            </button>
+            <button type="button" class="checkout-method-btn" data-payment="gcash">
+              <span class="checkout-method-label">GCash</span>
+              <img src="../Assets/gcash.png" alt="GCash" class="payment-method-logo">
+            </button>
+            <button type="button" class="checkout-method-btn" data-payment="cod">
+              <span class="checkout-method-label">Cash on Delivery</span>
+              <span class="payment-method-text">Pay when your order arrives</span>
+            </button>
+          </div>
+
+          <div class="checkout-payment-panels">
+            <div class="checkout-payment-panel active" data-payment-panel="card">
+              <h3>Card details</h3>
+              <div class="card-brand-options" role="tablist" aria-label="Supported card brands">
+                <button type="button" class="card-brand-btn active" data-brand="visa" aria-pressed="true">
+                  <img src="../Assets/visa.avif" alt="Visa" class="card-brand-logo">
+                </button>
+                <button type="button" class="card-brand-btn" data-brand="mastercard" aria-pressed="false">
+                  <img src="../Assets/Mastercard-logo.svg.png" alt="Mastercard" class="card-brand-logo">
+                </button>
+              </div>
+              <p id="cardBrandInfo" class="card-brand-info">Visa works well for everyday debit and credit payments.</p>
+              <div class="checkout-info-grid compact-grid">
+                <label>Name on card
+                  <input type="text" id="checkoutCardName" placeholder="Juan Dela Cruz">
+                </label>
+                <label>Card number
+                  <input type="text" id="checkoutCardNumber" placeholder="1234 5678 9012 3456">
+                </label>
+                <label>Expiry
+                  <input type="text" id="checkoutCardExpiry" placeholder="MM/YY">
+                </label>
+                <label>CVV
+                  <input type="text" id="checkoutCardCvv" placeholder="123">
+                </label>
+              </div>
+            </div>
+
+            <div class="checkout-payment-panel" data-payment-panel="gcash">
+              <h3>GCash details</h3>
+              <div class="gcash-badge">
+                <img src="../Assets/gcash.png" alt="GCash">
+                <span>Send payment using your GCash account</span>
+              </div>
+              <div class="checkout-info-grid compact-grid">
+                <label>GCash mobile number
+                  <input type="tel" id="checkoutGcashNumber" placeholder="09xxxxxxxxx">
+                </label>
+              </div>
+            </div>
+
+            <div class="checkout-payment-panel" data-payment-panel="cod">
+              <h3>Cash on delivery</h3>
+              <p class="checkout-panel-note">No online payment details are needed for cash on delivery.</p>
+            </div>
+          </div>
+
+          <label class="toggle-line"><input type="checkbox" id="secureCheckoutToggle"> Enable secure checkout settings</label>
+          <button type="submit" class="primary-btn checkout-save-btn">Save Checkout Information</button>
+          <small id="checkoutInfoMessage" class="status-message"></small>
+        </div>
+      </form>
     </section>
 
     <section class="section-card">
